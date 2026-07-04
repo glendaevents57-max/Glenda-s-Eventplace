@@ -121,8 +121,11 @@ export default function BookingsManager() {
     const pending = bookings.filter((b) => b.status === "pending").length;
     const confirmed = bookings.filter((b) => b.status === "confirmed").length;
     
-    // Revenue counts paid downpayments + paid finals
+    // Revenue counts paid downpayments + paid finals (excluding cancelled bookings)
     const revenue = bookings.reduce((sum, b) => {
+      if (b.status === "cancelled") {
+        return sum;
+      }
       if (b.payment_status === "downpayment_paid") {
         return sum + b.downpayment_amount;
       } else if (b.payment_status === "fully_paid") {
