@@ -346,13 +346,16 @@ export default function BookingsManager() {
                     <td className="py-4 px-4">{getPaymentBadge(b.payment_status)}</td>
                     <td className="py-4 px-4 text-right" onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center justify-end gap-1.5">
-                        {/* Action 1: Confirm Downpayment */}
+                        {/* Action 1: Confirm Downpayment or Full Payment */}
                         {b.status === "pending" && b.payment_status === "unpaid" && (
                           <button
-                            onClick={() => updateBookingStatus(b.id, "confirmed", "downpayment_paid")}
+                            onClick={() => {
+                              const nextPaymentStatus = (Number(b.remaining_balance) <= 0) ? "fully_paid" : "downpayment_paid";
+                              updateBookingStatus(b.id, "confirmed", nextPaymentStatus);
+                            }}
                             className="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] uppercase transition-all"
                           >
-                            Confirm Down
+                            {Number(b.remaining_balance) <= 0 ? "Confirm Full Pay" : "Confirm Down"}
                           </button>
                         )}
                         
@@ -489,7 +492,7 @@ export default function BookingsManager() {
 
                 <div className="grid grid-cols-2 gap-3 text-[10px] text-zinc-500 font-bold uppercase">
                   <div className="bg-zinc-950/60 p-2.5 rounded-lg border border-zinc-850 text-center">
-                    <span>50% Downpayment</span>
+                    <span>{Number(selectedBooking.remaining_balance) <= 0 ? "Full Payment Amount" : "50% Downpayment"}</span>
                     <div className="text-zinc-200 text-xs font-extrabold mt-1">₱{selectedBooking.downpayment_amount.toLocaleString()}</div>
                   </div>
                   <div className="bg-zinc-950/60 p-2.5 rounded-lg border border-zinc-850 text-center">
@@ -504,10 +507,13 @@ export default function BookingsManager() {
             <div className="mt-6 pt-4 border-t border-zinc-800 flex justify-end gap-2 text-xs">
               {selectedBooking.status === "pending" && selectedBooking.payment_status === "unpaid" && (
                 <button
-                  onClick={() => updateBookingStatus(selectedBooking.id, "confirmed", "downpayment_paid")}
+                  onClick={() => {
+                    const nextPaymentStatus = (Number(selectedBooking.remaining_balance) <= 0) ? "fully_paid" : "downpayment_paid";
+                    updateBookingStatus(selectedBooking.id, "confirmed", nextPaymentStatus);
+                  }}
                   className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg uppercase tracking-wider"
                 >
-                  Confirm Downpayment
+                  {Number(selectedBooking.remaining_balance) <= 0 ? "Confirm Full Payment" : "Confirm Downpayment"}
                 </button>
               )}
               {selectedBooking.status === "confirmed" && selectedBooking.payment_status === "downpayment_paid" && (

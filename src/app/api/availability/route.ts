@@ -3,6 +3,13 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+function toLocalYMD(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -54,7 +61,7 @@ export async function GET(request: Request) {
     // Format the active bookings into a simpler array
     const bookedSlots = bookingsResult.rows.map((row) => {
       const date = new Date(row.event_date);
-      const dateString = date.toISOString().split("T")[0];
+      const dateString = toLocalYMD(date);
       const hours = date.getHours();
       
       let slot = "custom";
@@ -75,7 +82,7 @@ export async function GET(request: Request) {
       // Get local YYYY-MM-DD from the DB Date object safely
       const rawDate = row.blocked_date;
       const formattedDate = rawDate instanceof Date 
-        ? rawDate.toISOString().split("T")[0] 
+        ? toLocalYMD(rawDate) 
         : String(rawDate).split("T")[0];
 
       return {
@@ -86,8 +93,8 @@ export async function GET(request: Request) {
     });
 
     return NextResponse.json({
-      startDate: startDate.toISOString().split("T")[0],
-      endDate: endDate.toISOString().split("T")[0],
+      startDate: toLocalYMD(startDate),
+      endDate: toLocalYMD(endDate),
       bookedSlots,
       blockedSlots,
     });

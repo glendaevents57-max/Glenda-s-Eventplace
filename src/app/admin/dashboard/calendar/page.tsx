@@ -28,6 +28,13 @@ interface BlockedSlot {
   reason: string;
 }
 
+function toLocalYMD(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export default function AdminCalendarManager() {
   const [bookings, setBookings] = useState<BookedSlot[]>([]);
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>([]);
@@ -84,7 +91,7 @@ export default function AdminCalendarManager() {
     if (!selectedDate) return;
 
     setFormSubmitting(true);
-    const dateString = selectedDate.toISOString().split("T")[0];
+    const dateString = toLocalYMD(selectedDate);
 
     try {
       const res = await fetch("/api/admin/blocked-dates", {
@@ -174,11 +181,11 @@ export default function AdminCalendarManager() {
   // Get active items on a specific day
   const getItemsForDay = (day: number) => {
     const dateObj = new Date(currentYear, currentMonth, day);
-    const dateStr = dateObj.toISOString().split("T")[0];
+    const dateStr = toLocalYMD(dateObj);
 
     const dayBookings = bookings.filter((b) => {
       const bDate = new Date(b.event_date);
-      const bDateStr = bDate.toISOString().split("T")[0];
+      const bDateStr = toLocalYMD(bDate);
       return bDateStr === dateStr;
     });
 
@@ -325,8 +332,8 @@ export default function AdminCalendarManager() {
                 <div>
                   <h4 className="text-xs font-bold text-zinc-500 uppercase mb-2">Occupancy & Blockages</h4>
                   {(() => {
-                    const dateStr = selectedDate.toISOString().split("T")[0];
-                    const dayBookings = bookings.filter(b => new Date(b.event_date).toISOString().split("T")[0] === dateStr);
+                    const dateStr = toLocalYMD(selectedDate);
+                    const dayBookings = bookings.filter(b => toLocalYMD(new Date(b.event_date)) === dateStr);
                     const dayBlocks = blockedSlots.filter(s => s.blocked_date === dateStr);
 
                     if (dayBookings.length === 0 && dayBlocks.length === 0) {

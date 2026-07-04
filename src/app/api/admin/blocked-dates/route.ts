@@ -5,6 +5,13 @@ import { verifySession } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
+function toLocalYMD(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 // Fetch all blocked slots
 export async function GET() {
   try {
@@ -21,11 +28,11 @@ export async function GET() {
       "SELECT id, blocked_date, time_slot, reason FROM public.blocked_slots ORDER BY blocked_date ASC"
     );
 
-    // Format dates to YYYY-MM-DD string
+    // Format dates to YYYY-MM-DD string safely without timezone shifts
     const blockedSlots = result.rows.map(row => {
       const rawDate = row.blocked_date;
       const formattedDate = rawDate instanceof Date 
-        ? rawDate.toISOString().split("T")[0] 
+        ? toLocalYMD(rawDate) 
         : String(rawDate).split("T")[0];
 
       return {
@@ -81,7 +88,7 @@ export async function POST(request: Request) {
 
     const inserted = result.rows[0];
     const formattedDate = inserted.blocked_date instanceof Date 
-      ? inserted.blocked_date.toISOString().split("T")[0] 
+      ? toLocalYMD(inserted.blocked_date) 
       : String(inserted.blocked_date).split("T")[0];
 
     return NextResponse.json({

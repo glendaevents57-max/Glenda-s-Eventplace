@@ -34,6 +34,13 @@ interface AvailabilityData {
   blockedSlots: BlockedSlot[];
 }
 
+function toLocalYMD(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export default function BookingWizard() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -52,6 +59,9 @@ export default function BookingWizard() {
   const [specialRequestDetails, setSpecialRequestDetails] = useState("");
   const [themeName, setThemeName] = useState("Royal Gold & White");
   const [themeDetails, setThemeDetails] = useState("");
+
+  // --- Payment Plan ---
+  const [paymentPlan, setPaymentPlan] = useState<"downpayment" | "full">("downpayment");
 
   // --- Step 3 States (Menu Selection & Upgrades) ---
   const [refreshmentChoices, setRefreshmentChoices] = useState<string[]>([
@@ -112,8 +122,8 @@ export default function BookingWizard() {
     let guestUpgradeCost = extraGuests * GUEST_UPGRADE_PRICE_PER_HEAD;
     
     const total = packageBase + upgradesTotal + guestUpgradeCost;
-    const downpayment = total * 0.5;
-    const remaining = total * 0.5;
+    const downpayment = paymentPlan === "downpayment" ? total * 0.5 : total;
+    const remaining = paymentPlan === "downpayment" ? total * 0.5 : 0;
 
     return { total, downpayment, remaining, packageBase, upgradesTotal, guestUpgradeCost };
   };
@@ -416,7 +426,7 @@ export default function BookingWizard() {
                   }
 
                   const dateObj = new Date(currentYear, currentMonth, day);
-                  const dateStr = dateObj.toISOString().split("T")[0];
+                  const dateStr = toLocalYMD(dateObj);
                   
                   // Disable past dates
                   const today = new Date();
@@ -466,81 +476,84 @@ export default function BookingWizard() {
                   {selectedDate ? formatSelectedDate() : "Choose a Date First"}
                 </h3>
 
-                {selectedDate ? (
-                  <div className="space-y-3">
-                    {/* Morning Slot */}
-                    <button
-                      disabled={isSlotBookedOrBlocked(selectedDate.toISOString().split("T")[0], "morning")}
-                      onClick={() => setSelectedSlot("morning")}
-                      className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
-                        selectedSlot === "morning"
-                          ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
-                          : isSlotBookedOrBlocked(selectedDate.toISOString().split("T")[0], "morning")
-                          ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
-                          : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Clock className="w-5 h-5 text-amber-500/80" />
-                        <div>
-                          <div className="font-bold text-sm">Morning Event</div>
-                          <div className="text-xs text-zinc-500 mt-0.5">09:00 AM - 01:00 PM (4 Hrs)</div>
+                {selectedDate ? (() => {
+                  const selectedDateStr = toLocalYMD(selectedDate);
+                  return (
+                    <div className="space-y-3">
+                      {/* Morning Slot */}
+                      <button
+                        disabled={isSlotBookedOrBlocked(selectedDateStr, "morning")}
+                        onClick={() => setSelectedSlot("morning")}
+                        className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
+                          selectedSlot === "morning"
+                            ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
+                            : isSlotBookedOrBlocked(selectedDateStr, "morning")
+                            ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
+                            : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Clock className="w-5 h-5 text-amber-500/80" />
+                          <div>
+                            <div className="font-bold text-sm">Morning Event</div>
+                            <div className="text-xs text-zinc-500 mt-0.5">09:00 AM - 01:00 PM (4 Hrs)</div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-xs font-semibold uppercase tracking-wider">
-                        {getSlotDetails(selectedDate.toISOString().split("T")[0], "morning")}
-                      </div>
-                    </button>
+                        <div className="text-xs font-semibold uppercase tracking-wider">
+                          {getSlotDetails(selectedDateStr, "morning")}
+                        </div>
+                      </button>
 
-                    {/* Afternoon Slot */}
-                    <button
-                      disabled={isSlotBookedOrBlocked(selectedDate.toISOString().split("T")[0], "afternoon")}
-                      onClick={() => setSelectedSlot("afternoon")}
-                      className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
-                        selectedSlot === "afternoon"
-                          ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
-                          : isSlotBookedOrBlocked(selectedDate.toISOString().split("T")[0], "afternoon")
-                          ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
-                          : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Clock className="w-5 h-5 text-amber-500/80" />
-                        <div>
-                          <div className="font-bold text-sm">Afternoon Event</div>
-                          <div className="text-xs text-zinc-500 mt-0.5">02:00 PM - 06:00 PM (4 Hrs)</div>
+                      {/* Afternoon Slot */}
+                      <button
+                        disabled={isSlotBookedOrBlocked(selectedDateStr, "afternoon")}
+                        onClick={() => setSelectedSlot("afternoon")}
+                        className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
+                          selectedSlot === "afternoon"
+                            ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
+                            : isSlotBookedOrBlocked(selectedDateStr, "afternoon")
+                            ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
+                            : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Clock className="w-5 h-5 text-amber-500/80" />
+                          <div>
+                            <div className="font-bold text-sm">Afternoon Event</div>
+                            <div className="text-xs text-zinc-500 mt-0.5">02:00 PM - 06:00 PM (4 Hrs)</div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-xs font-semibold uppercase tracking-wider">
-                        {getSlotDetails(selectedDate.toISOString().split("T")[0], "afternoon")}
-                      </div>
-                    </button>
+                        <div className="text-xs font-semibold uppercase tracking-wider">
+                          {getSlotDetails(selectedDateStr, "afternoon")}
+                        </div>
+                      </button>
 
-                    {/* Evening Slot */}
-                    <button
-                      disabled={isSlotBookedOrBlocked(selectedDate.toISOString().split("T")[0], "evening")}
-                      onClick={() => setSelectedSlot("evening")}
-                      className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
-                        selectedSlot === "evening"
-                          ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
-                          : isSlotBookedOrBlocked(selectedDate.toISOString().split("T")[0], "evening")
-                          ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
-                          : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Clock className="w-5 h-5 text-amber-500/80" />
-                        <div>
-                          <div className="font-bold text-sm">Evening Event</div>
-                          <div className="text-xs text-zinc-500 mt-0.5">07:00 PM - 11:00 PM (4 Hrs)</div>
+                      {/* Evening Slot */}
+                      <button
+                        disabled={isSlotBookedOrBlocked(selectedDateStr, "evening")}
+                        onClick={() => setSelectedSlot("evening")}
+                        className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
+                          selectedSlot === "evening"
+                            ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
+                            : isSlotBookedOrBlocked(selectedDateStr, "evening")
+                            ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
+                            : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <Clock className="w-5 h-5 text-amber-500/80" />
+                          <div>
+                            <div className="font-bold text-sm">Evening Event</div>
+                            <div className="text-xs text-zinc-500 mt-0.5">07:00 PM - 11:00 PM (4 Hrs)</div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="text-xs font-semibold uppercase tracking-wider">
-                        {getSlotDetails(selectedDate.toISOString().split("T")[0], "evening")}
-                      </div>
-                    </button>
-                  </div>
-                ) : (
+                        <div className="text-xs font-semibold uppercase tracking-wider">
+                          {getSlotDetails(selectedDateStr, "evening")}
+                        </div>
+                      </button>
+                    </div>
+                  );
+                })() : (
                   <div className="border border-dashed border-zinc-800 rounded-xl p-8 text-center text-zinc-500 text-sm">
                     Please select a date on the calendar first to view available time slots.
                   </div>
@@ -901,10 +914,46 @@ export default function BookingWizard() {
                 </div>
               </div>
 
+              {/* Payment Plan Options */}
               <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/30">
-                <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">50% Downpayment Policy</h3>
+                <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Select Payment Option</h3>
+                <div className="grid grid-cols-2 gap-3 mb-1">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentPlan("downpayment")}
+                    className={`p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center cursor-pointer ${
+                      paymentPlan === "downpayment"
+                        ? "border-amber-400 bg-amber-500/5 text-amber-300"
+                        : "border-zinc-850 bg-zinc-900/20 text-zinc-400 hover:bg-zinc-900/40"
+                    }`}
+                  >
+                    <span className="font-bold text-xs">50% Downpayment</span>
+                    <span className="text-[10px] text-zinc-500 mt-1">₱{pricing.downpayment.toLocaleString()} now</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentPlan("full")}
+                    className={`p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center cursor-pointer ${
+                      paymentPlan === "full"
+                        ? "border-amber-400 bg-amber-500/5 text-amber-300"
+                        : "border-zinc-850 bg-zinc-900/20 text-zinc-400 hover:bg-zinc-900/40"
+                    }`}
+                  >
+                    <span className="font-bold text-xs">100% Full Payment</span>
+                    <span className="text-[10px] text-zinc-500 mt-1">₱{pricing.total.toLocaleString()} now</span>
+                  </button>
+                </div>
+              </div>
+
+              <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/30">
+                <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Payment Terms Policy</h3>
                 <p className="text-xs text-zinc-400 leading-relaxed">
-                  At Glenda Royale Events, a **50% downpayment** is required to secure your exclusive booking slot. Once submitted, your slot will be temporarily held for **2 hours** waiting for proof of downpayment. The remaining 50% balance must be settled at the start of your event.
+                  {paymentPlan === "downpayment" ? (
+                    "At Glenda Royale Events, a **50% downpayment** is required to secure your exclusive booking slot. Once submitted, your slot will be temporarily held for **2 hours** waiting for proof of downpayment. The remaining 50% balance must be settled at the start of your event."
+                  ) : (
+                    "You have selected **100% Full Payment** to secure your booking slot. Once submitted, your slot will be temporarily held for **2 hours** waiting for proof of payment. There will be no remaining balance due at the start of your event."
+                  )}
                 </p>
               </div>
             </div>
@@ -941,7 +990,9 @@ export default function BookingWizard() {
               <div className="space-y-3 border-t border-dashed border-zinc-800 pt-4">
                 <div className="flex justify-between items-center bg-amber-400/5 border border-amber-400/10 p-3 rounded-xl">
                   <div>
-                    <span className="text-[10px] font-bold text-amber-400 uppercase block">50% Downpayment Due</span>
+                    <span className="text-[10px] font-bold text-amber-400 uppercase block">
+                      {paymentPlan === "downpayment" ? "50% Downpayment Due" : "Amount to Settle"}
+                    </span>
                     <span className="text-xs text-zinc-400">To secure reservation</span>
                   </div>
                   <span className="text-lg font-extrabold text-amber-300">₱{pricing.downpayment.toLocaleString()}</span>
@@ -980,9 +1031,11 @@ export default function BookingWizard() {
             </div>
 
             <div className="space-y-2 text-sm text-zinc-300">
-              <div className="font-bold text-zinc-200 mb-1">Downpayment instructions:</div>
+              <div className="font-bold text-zinc-200 mb-1">
+                {paymentPlan === "downpayment" ? "Downpayment instructions:" : "Payment instructions:"}
+              </div>
               <p className="text-xs text-zinc-400 leading-normal">
-                Please transfer the **50% downpayment of ₱{pricing.downpayment.toLocaleString()}** to secure your date:
+                Please transfer the **{paymentPlan === "downpayment" ? "50% downpayment" : "100% full payment"} of ₱{pricing.downpayment.toLocaleString()}** to secure your date:
               </p>
               <div className="bg-zinc-900/60 p-3 rounded-lg border border-zinc-850 space-y-1 font-mono text-xs">
                 <div>Bank: **GCash / BPI**</div>

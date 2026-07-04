@@ -24,7 +24,7 @@ const bookingSchema = z.object({
   special_request_details: z.string().optional().default(""),
   total_price: z.number().min(30000),
   downpayment_amount: z.number().min(15000),
-  remaining_balance: z.number().min(15000),
+  remaining_balance: z.number().min(0),
 });
 
 export async function POST(request: Request) {
@@ -33,8 +33,17 @@ export async function POST(request: Request) {
     const validatedData = bookingSchema.parse(body);
 
     const parsedDate = new Date(validatedData.event_date);
-    const dateString = parsedDate.toISOString().split("T")[0]; // YYYY-MM-DD
-    const hours = parsedDate.getHours();
+    
+    // Adjust to local Manila time (UTC+8) to extract components
+    const localDate = new Date(parsedDate.getTime() + 8 * 60 * 60 * 1000);
+    const year = localDate.getUTCFullYear();
+    const month = String(localDate.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(localDate.getUTCDate()).padStart(2, "0");
+    const hourStr = String(localDate.getUTCHours()).padStart(2, "0");
+    
+    const dateString = `${year}-${month}-${day}`;
+    const hours = localDate.getUTCHours();
+    const localDbString = `${year}-${month}-${day} ${hourStr}:00:00`;
 
     // Map start hour to standard slot name
     let timeSlot = "custom";
@@ -63,7 +72,7 @@ export async function POST(request: Request) {
     const bookingConflictCheck = await query(
       `SELECT id FROM public.bookings 
        WHERE event_date = $1 AND status != 'cancelled'`,
-      [parsedDate.toISOString()]
+      [localDbString]
     );
 
     if (bookingConflictCheck.rows.length > 0) {
@@ -96,7 +105,7 @@ export async function POST(request: Request) {
       validatedData.bookers_email,
       validatedData.bookers_phone_number,
       validatedData.event_type,
-      parsedDate.toISOString(),
+      localDbString,
       validatedData.duration_minutes,
       validatedData.visitors_count,
       "pending",
