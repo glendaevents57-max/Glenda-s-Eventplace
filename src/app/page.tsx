@@ -34,6 +34,23 @@ export default function Home() {
               Glenda Royale Events
             </span>
           </div>
+
+          {/* Navigation Links */}
+          <nav className="flex items-center gap-6">
+            <a 
+              href="#venue-gallery" 
+              className="text-xs font-bold uppercase tracking-widest text-zinc-650 hover:text-amber-500 transition-all"
+            >
+              Venue
+            </a>
+            <a 
+              href="#package-details" 
+              className="text-xs font-bold uppercase tracking-widest text-zinc-650 hover:text-amber-500 transition-all"
+            >
+              Food
+            </a>
+          </nav>
+
           <Link 
             href="/book"
             className="px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-400 text-zinc-950 hover:bg-amber-500 transition-all flex items-center gap-1.5 shadow-md shadow-amber-400/10 active:scale-[0.98] uppercase tracking-wider"
@@ -54,14 +71,14 @@ export default function Home() {
           Curated Experiences for Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-amber-500 to-amber-700 italic block sm:inline">Special Day</span>
         </h1>
         
-        <p className="text-zinc-600 text-base sm:text-lg max-w-2xl leading-relaxed mb-10">
+        <p className="text-zinc-650 text-base sm:text-lg leading-relaxed mb-10 font-medium max-w-2xl">
           Every celebration deserves a touch of elegance. At Glenda Royale Events, we create unforgettable experiences with a beautifully styled venue, exquisite grazing table, and exceptional food—perfectly curated to make your special moments truly memorable.
         </p>
 
         <div className="flex justify-center w-full max-w-md">
           <a
             href="#package-details"
-            className="h-12 px-8 rounded-xl bg-amber-400 hover:bg-amber-500 text-zinc-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-400/15 active:scale-[0.98] uppercase tracking-wider"
+            className="h-12 px-8 rounded-xl bg-amber-400 hover:bg-amber-500 text-zinc-950 font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-amber-400/15 active:scale-[0.98] uppercase tracking-wider animate-bounce-subtle"
           >
             Explore Inclusions <ArrowRight className="w-4 h-4" />
           </a>
@@ -160,7 +177,7 @@ export default function Home() {
       </div>
 
       {/* Venue Gallery Section */}
-      <section className="relative z-10 max-w-5xl mx-auto px-6 mb-24 w-full">
+      <section id="venue-gallery" className="relative z-10 max-w-5xl mx-auto px-6 mb-24 w-full scroll-mt-24">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-950 mb-3">
             Explore Our Curated Venue
