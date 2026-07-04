@@ -12,6 +12,7 @@ import {
   Coffee, 
   UtensilsCrossed 
 } from "lucide-react";
+import VenueGallery from "@/components/VenueGallery";
 
 export const metadata = {
   title: "Glenda Royale Events | Intimate Event Venue Batangas",
@@ -152,6 +153,19 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Venue Gallery Section */}
+      <section className="relative z-10 max-w-5xl mx-auto px-6 mb-24 w-full">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-zinc-100 mb-3">
+            Explore Our Curated Venue
+          </h2>
+          <p className="text-sm text-zinc-500 max-w-md mx-auto">
+            Take a look at the styled elegance and details designed for your special day.
+          </p>
+        </div>
+        <VenueGallery />
       </section>
 
       {/* Occasions Section */}
