@@ -1,0 +1,29 @@
+# Glenda Royale Events - Task List
+
+- [x] **Task 1: Database Migration Setup & Connection Testing**
+  - [x] Create `database/schema.sql` defining `admins`, `bookings`, and `blocked_slots` tables (using client provided columns with additions).
+  - [x] Write `database/seed.sql` for initial values (e.g. default admin user).
+  - [x] Verify database connection.
+- [x] **Task 2: Core Booking & Availability APIs**
+  - [x] Implement `POST /api/bookings` with double-booking slot validation.
+  - [x] Implement `GET /api/availability` to list reserved time slots & blocked dates.
+  - [x] Implement `GET /api/bookings/[id]` for detail retrieval.
+- [x] **Task 3: Interactive Event Customizer & Pricing Calculator Component**
+  - [x] Build wizard container, step indicators.
+  - [x] Implement date and time slot pickers.
+  - [x] Implement theme and menu options picker.
+  - [x] Implement live price calculator showing ₱30k base, ₱45k special requests, add-ons, and 50/50 downpayment split.
+- [x] **Task 4: Client Booking Page & Landing Page Integration**
+  - [x] Update `src/app/page.tsx` with high-end luxury landing page styling.
+  - [x] Integrate Booking Wizard into client booking flow.
+  - [x] Implement booking success display with payment instructions.
+- [x] **Task 5: Admin Authentication API & Layout**
+  - [x] Create `/admin/login` page.
+  - [x] Implement `/api/admin/auth` verification route.
+  - [x] Setup route protection layout.
+- [x] **Task 6: Admin Dashboard: Bookings Manager**
+  - [x] Build bookings data table with details (theme, menu selection, guest counts).
+  - [x] Add payment status triggers (Mark Downpayment Paid, Mark Fully Paid).
+- [x] **Task 7: Admin Calendar & Settings Manager**
+  - [x] Build calendar dashboard widget highlighting booked slots.
+  - [x] Add controls to block/unblock dates.
