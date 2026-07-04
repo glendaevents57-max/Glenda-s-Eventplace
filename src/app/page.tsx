@@ -253,15 +253,26 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="h-64 rounded-3xl border border-zinc-800 bg-zinc-950/60 p-6 flex flex-col justify-center items-center text-center">
-            <MapPin className="w-12 h-12 text-amber-400/80 mb-4" />
-            <h3 className="font-serif font-bold text-zinc-200 mb-2">Visit Batangas Premiere Events Place</h3>
-            <p className="text-xs text-zinc-500 leading-normal max-w-xs mb-4">
-              Conveniently located on the 2nd Floor of the JCS Building in Rosario, Batangas.
-            </p>
-            <span className="text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-400/5 border border-amber-400/20 px-3 py-1 rounded-full">
-              Rosario, Batangas
-            </span>
+          <div className="h-72 rounded-3xl border border-zinc-800 overflow-hidden relative group shadow-lg shadow-zinc-950/50">
+            <iframe
+              src="https://maps.google.com/maps?q=13.8444128,121.2321281&z=17&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="w-full h-full grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+            />
+            {/* Overlay link to open in Google Maps App */}
+            <a
+              href="https://maps.app.goo.gl/U8PXLKRzpVZLBH6h6"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="absolute bottom-4 right-4 bg-zinc-950/80 backdrop-blur-md border border-zinc-800 text-amber-400 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-xl hover:bg-amber-400 hover:text-zinc-950 transition-all flex items-center gap-1 shadow-lg"
+            >
+              Open in Maps App ↗
+            </a>
           </div>
         </div>
       </section>
