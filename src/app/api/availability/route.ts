@@ -39,6 +39,15 @@ export async function GET(request: Request) {
       endDate = new Date(Date.UTC(today.getFullYear(), today.getMonth() + 4, 0, 23, 59, 59));
     }
 
+    // Auto-cancel bookings that exceeded the 2-hour payment window
+    await query(
+      `UPDATE public.bookings 
+       SET status = 'cancelled' 
+       WHERE status = 'pending' 
+         AND payment_status = 'unpaid' 
+         AND expected_expiry_time < NOW()`
+    );
+
     // Query active bookings in the range
     const bookingsResult = await query(
       `SELECT id, event_date, duration_minutes, status 

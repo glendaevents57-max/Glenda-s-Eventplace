@@ -16,7 +16,16 @@ export async function GET() {
       return NextResponse.json({ message: "Unauthorized." }, { status: 401 });
     }
 
-    // 2. Fetch all bookings sorted by event_date descending
+    // 2. Auto-cancel bookings that exceeded the 2-hour payment window
+    await query(
+      `UPDATE public.bookings 
+       SET status = 'cancelled' 
+       WHERE status = 'pending' 
+         AND payment_status = 'unpaid' 
+         AND expected_expiry_time < NOW()`
+    );
+
+    // 3. Fetch all bookings sorted by event_date descending
     const result = await query(
       `SELECT 
         id, admin_id, bookers_name, bookers_email, bookers_phone_number, event_type,

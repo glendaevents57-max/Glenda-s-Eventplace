@@ -32,6 +32,15 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = bookingSchema.parse(body);
 
+    // Auto-cancel bookings that exceeded the 2-hour payment window
+    await query(
+      `UPDATE public.bookings 
+       SET status = 'cancelled' 
+       WHERE status = 'pending' 
+         AND payment_status = 'unpaid' 
+         AND expected_expiry_time < NOW()`
+    );
+
     const parsedDate = new Date(validatedData.event_date);
     
     // Adjust to local Manila time (UTC+8) to extract components
