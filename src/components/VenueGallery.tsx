@@ -44,7 +44,7 @@ export default function VenueGallery() {
         {/* Main large featured image */}
         <div 
           onClick={() => setIndex(0)}
-          className="md:col-span-6 md:row-span-2 group relative overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900 cursor-pointer aspect-[4/3] sm:aspect-auto sm:h-[450px]"
+          className="md:col-span-6 md:row-span-2 group relative overflow-hidden rounded-3xl border border-zinc-200 bg-zinc-100 cursor-pointer aspect-[4/3] sm:aspect-auto sm:h-[450px]"
         >
           <img 
             src={GALLERY_IMAGES[0].src} 
@@ -63,7 +63,7 @@ export default function VenueGallery() {
               Click to view full screen gallery
             </p>
           </div>
-          <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-950/60 border border-zinc-800 flex items-center justify-center text-zinc-300 opacity-0 group-hover:opacity-100 transition-all">
+          <div className="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-950/60 border border-zinc-700 flex items-center justify-center text-zinc-300 opacity-0 group-hover:opacity-100 transition-all">
             <Maximize2 className="w-4 h-4" />
           </div>
         </div>
@@ -74,7 +74,7 @@ export default function VenueGallery() {
             <div 
               key={idx}
               onClick={() => setIndex(idx + 1)}
-              className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900 cursor-pointer aspect-square"
+              className="group relative overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 cursor-pointer aspect-square"
             >
               <img 
                 src={img.src} 
@@ -90,7 +90,7 @@ export default function VenueGallery() {
                   {img.title}
                 </h4>
               </div>
-              <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-zinc-950/60 border border-zinc-800 flex items-center justify-center text-zinc-300 opacity-0 group-hover:opacity-100 transition-all">
+              <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-zinc-950/60 border border-zinc-700 flex items-center justify-center text-zinc-300 opacity-0 group-hover:opacity-100 transition-all">
                 <Maximize2 className="w-3 h-3" />
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function VenueGallery() {
       <div className="flex justify-center">
         <button 
           onClick={() => setIndex(0)}
-          className="px-6 py-3 rounded-xl border border-zinc-800 bg-zinc-900/40 text-zinc-300 hover:bg-zinc-850 hover:text-amber-400 hover:border-amber-400/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-lg"
+          className="px-6 py-3 rounded-xl border border-zinc-300 bg-white text-zinc-800 hover:bg-zinc-200 hover:text-amber-600 hover:border-amber-400/30 text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-sm"
         >
           View All Venue Photos ({GALLERY_IMAGES.length})
         </button>

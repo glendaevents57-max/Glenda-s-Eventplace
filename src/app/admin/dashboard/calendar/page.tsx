@@ -215,8 +215,8 @@ export default function AdminCalendarManager() {
     <div className="space-y-8">
       {/* Page Title */}
       <div>
-        <h1 className="text-3xl font-serif font-bold text-zinc-100 mb-2">Event Schedule</h1>
-        <p className="text-xs text-zinc-500 uppercase tracking-widest font-semibold">
+        <h1 className="text-3xl font-serif font-bold text-zinc-950 mb-2">Event Schedule</h1>
+        <p className="text-xs text-zinc-550 uppercase tracking-widest font-semibold">
           Check upcoming scheduled events and block/unblock blackout reservation slots.
         </p>
       </div>
@@ -230,22 +230,22 @@ export default function AdminCalendarManager() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Calendar Grid View */}
-        <div className="lg:col-span-8 bg-zinc-950/20 border border-zinc-900 rounded-3xl p-6 shadow-xl backdrop-blur-md">
+        <div className="lg:col-span-8 bg-zinc-200/60 border border-zinc-300 rounded-3xl p-6 shadow-xl backdrop-blur-md">
           {/* Header Controls */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-serif font-bold text-zinc-200">
+            <h2 className="text-lg font-serif font-bold text-zinc-900">
               {months[currentMonth]} {currentYear}
             </h2>
             <div className="flex gap-1.5">
               <button 
                 onClick={handlePrevMonth} 
-                className="p-2 rounded-xl border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-all cursor-pointer"
+                className="p-2 rounded-xl border border-zinc-250 bg-zinc-50 hover:bg-zinc-200 text-zinc-650 hover:text-zinc-900 transition-all cursor-pointer"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
               <button 
                 onClick={handleNextMonth} 
-                className="p-2 rounded-xl border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-all cursor-pointer"
+                className="p-2 rounded-xl border border-zinc-250 bg-zinc-50 hover:bg-zinc-200 text-zinc-650 hover:text-zinc-900 transition-all cursor-pointer"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -253,13 +253,13 @@ export default function AdminCalendarManager() {
           </div>
 
           {/* Grid day header */}
-          <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-zinc-500 mb-3 uppercase tracking-wider">
+          <div className="grid grid-cols-7 gap-2 text-center text-xs font-semibold text-zinc-550 mb-3 uppercase tracking-wider">
             <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
           </div>
 
           {/* Grid cells */}
           {loading ? (
-            <div className="h-96 flex items-center justify-center text-xs text-zinc-500 font-bold uppercase tracking-wider">
+            <div className="h-96 flex items-center justify-center text-xs text-zinc-550 font-bold uppercase tracking-wider">
               Loading calendar schedules...
             </div>
           ) : (
@@ -279,10 +279,10 @@ export default function AdminCalendarManager() {
                     className={`min-h-[100px] p-2.5 rounded-xl border flex flex-col justify-between transition-all cursor-pointer ${
                       isSelected
                         ? "border-amber-400 bg-amber-500/5"
-                        : "border-zinc-900 bg-zinc-950/20 hover:border-zinc-800 hover:bg-zinc-900/10"
+                        : "border-zinc-300 bg-zinc-200/60 hover:border-zinc-250 hover:bg-zinc-100/10"
                     }`}
                   >
-                    <span className="font-bold text-xs text-zinc-400">{day}</span>
+                    <span className="font-bold text-xs text-zinc-650">{day}</span>
                     
                     {/* Event indicators on the day */}
                     <div className="space-y-1 mt-2">
@@ -316,28 +316,28 @@ export default function AdminCalendarManager() {
 
         {/* Day Actions & Block Form Sidebar */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="p-6 rounded-3xl border border-zinc-900 bg-zinc-950/20 shadow-xl backdrop-blur-md">
-            <h3 className="text-md font-serif font-bold text-zinc-200 mb-4 flex items-center gap-2">
+          <div className="p-6 rounded-3xl border border-zinc-300 bg-zinc-200/60 shadow-xl backdrop-blur-md">
+            <h3 className="text-md font-serif font-bold text-zinc-900 mb-4 flex items-center gap-2">
               <Info className="w-5 h-5 text-amber-500/70" /> Day Details
             </h3>
 
             {selectedDate ? (
               <div className="space-y-5">
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-500 uppercase">Selected Date</h4>
-                  <div className="text-sm font-serif font-bold text-zinc-100 mt-1">{formatSelectedDate()}</div>
+                  <h4 className="text-xs font-bold text-zinc-550 uppercase">Selected Date</h4>
+                  <div className="text-sm font-serif font-bold text-zinc-950 mt-1">{formatSelectedDate()}</div>
                 </div>
 
                 {/* Day Occupancy list */}
                 <div>
-                  <h4 className="text-xs font-bold text-zinc-500 uppercase mb-2">Occupancy & Blockages</h4>
+                  <h4 className="text-xs font-bold text-zinc-550 uppercase mb-2">Occupancy & Blockages</h4>
                   {(() => {
                     const dateStr = toLocalYMD(selectedDate);
                     const dayBookings = bookings.filter(b => toLocalYMD(new Date(b.event_date)) === dateStr);
                     const dayBlocks = blockedSlots.filter(s => s.blocked_date === dateStr);
 
                     if (dayBookings.length === 0 && dayBlocks.length === 0) {
-                      return <p className="text-xs text-zinc-500 italic">This date is fully open and available.</p>;
+                      return <p className="text-xs text-zinc-550 italic">This date is fully open and available.</p>;
                     }
 
                     return (
@@ -351,14 +351,14 @@ export default function AdminCalendarManager() {
                           else if (hours === 19) slot = "Evening";
 
                           return (
-                            <div key={b.id} className="p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 text-xs">
+                            <div key={b.id} className="p-3 rounded-xl bg-zinc-50 border border-zinc-250 text-xs">
                               <div className="flex justify-between items-center mb-1">
-                                <span className="font-bold text-zinc-200">🎉 {b.bookers_name}</span>
+                                <span className="font-bold text-zinc-900">🎉 {b.bookers_name}</span>
                                 <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
                                   b.status === "confirmed" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-300"
                                 }`}>{b.status}</span>
                               </div>
-                              <div className="text-[10px] text-zinc-500 flex items-center gap-1">
+                              <div className="text-[10px] text-zinc-550 flex items-center gap-1">
                                 <Clock className="w-3 h-3" /> {slot} ({b.event_type})
                               </div>
                             </div>
@@ -371,7 +371,7 @@ export default function AdminCalendarManager() {
                               <div className="font-bold text-rose-400 flex items-center gap-1.5">
                                 <Lock className="w-3.5 h-3.5" /> Blocked ({s.time_slot})
                               </div>
-                              {s.reason && <p className="text-[10px] text-zinc-400 mt-1">{s.reason}</p>}
+                              {s.reason && <p className="text-[10px] text-zinc-650 mt-1">{s.reason}</p>}
                             </div>
                             <button
                               onClick={() => handleUnblockSlot(s.id)}
@@ -387,15 +387,15 @@ export default function AdminCalendarManager() {
                 </div>
 
                 {/* Block date form */}
-                <form onSubmit={handleBlockSlot} className="border-t border-zinc-900 pt-4 space-y-4">
-                  <h4 className="text-xs font-bold text-zinc-500 uppercase">Block Out This Date</h4>
+                <form onSubmit={handleBlockSlot} className="border-t border-zinc-300 pt-4 space-y-4">
+                  <h4 className="text-xs font-bold text-zinc-550 uppercase">Block Out This Date</h4>
                   
                   <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-2">Select Slot to Block</label>
+                    <label className="block text-[10px] font-bold text-zinc-550 uppercase mb-2">Select Slot to Block</label>
                     <select
                       value={selectedSlot}
                       onChange={(e) => setSelectedSlot(e.target.value)}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-amber-400"
+                      className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-2.5 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
                     >
                       <option value="all_day">Block Whole Day (All Slots)</option>
                       <option value="morning">Block Morning (9 AM - 1 PM)</option>
@@ -405,49 +405,49 @@ export default function AdminCalendarManager() {
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-bold text-zinc-500 uppercase mb-2">Reason (Optional)</label>
+                    <label className="block text-[10px] font-bold text-zinc-550 uppercase mb-2">Reason (Optional)</label>
                     <input
                       type="text"
                       value={blockReason}
                       onChange={(e) => setBlockReason(e.target.value)}
                       placeholder="e.g. Venue maintenance, holiday"
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-200 focus:outline-none focus:border-amber-400"
+                      className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-2.5 text-xs text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={formSubmitting}
-                    className="w-full h-9 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-bold text-xs rounded-lg transition-all"
+                    className="w-full h-9 bg-amber-400 hover:bg-amber-500 text-zinc-950 font-bold text-xs rounded-lg transition-all shadow-md uppercase tracking-wider"
                   >
                     {formSubmitting ? "Blocking..." : "Apply Blackout Block"}
                   </button>
                 </form>
               </div>
             ) : (
-              <div className="border border-dashed border-zinc-800 rounded-2xl p-8 text-center text-zinc-500 text-xs">
+              <div className="border border-dashed border-zinc-250 rounded-2xl p-8 text-center text-zinc-550 text-xs">
                 Select any date on the calendar to view its schedules or apply a blackout block.
               </div>
             )}
           </div>
 
           {/* List of blocked dates overall */}
-          <div className="p-6 rounded-3xl border border-zinc-900 bg-zinc-950/20 shadow-xl backdrop-blur-md max-h-[350px] overflow-y-auto">
-            <h3 className="text-xs font-bold text-zinc-400 uppercase tracking-widest mb-4 flex items-center gap-1.5">
+          <div className="p-6 rounded-3xl border border-zinc-300 bg-zinc-200/60 shadow-xl backdrop-blur-md max-h-[350px] overflow-y-auto">
+            <h3 className="text-xs font-bold text-zinc-650 uppercase tracking-widest mb-4 flex items-center gap-1.5">
               <Lock className="w-4 h-4 text-amber-500/70" /> Active Blackout List
             </h3>
             {blockedSlots.length === 0 ? (
-              <p className="text-xs text-zinc-500 italic">No blackout blocks active currently.</p>
+              <p className="text-xs text-zinc-550 italic">No blackout blocks active currently.</p>
             ) : (
               <div className="space-y-2">
                 {blockedSlots.map((s) => (
-                  <div key={s.id} className="p-3 rounded-xl border border-zinc-900 bg-zinc-900/20 text-xs flex justify-between items-center">
+                  <div key={s.id} className="p-3 rounded-xl border border-zinc-300 bg-zinc-100 text-xs flex justify-between items-center">
                     <div>
-                      <div className="font-bold text-zinc-300">
+                      <div className="font-bold text-zinc-850">
                         {new Date(s.blocked_date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </div>
-                      <div className="text-[10px] text-zinc-500 capitalize mt-0.5">Slot: {s.time_slot}</div>
-                      {s.reason && <div className="text-[9px] text-zinc-600 italic mt-0.5 truncate max-w-[150px]">{s.reason}</div>}
+                      <div className="text-[10px] text-zinc-550 capitalize mt-0.5">Slot: {s.time_slot}</div>
+                      {s.reason && <div className="text-[9px] text-zinc-400 italic mt-0.5 truncate max-w-[150px]">{s.reason}</div>}
                     </div>
                     <button
                       onClick={() => handleUnblockSlot(s.id)}

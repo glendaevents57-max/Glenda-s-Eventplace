@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #090909; /* Deep off-black */
-  --foreground: #f4f4f7; /* Crisp platinum */
+  --background: #fcf9f8; /* Warm Beige */
+  --foreground: #121212; /* Platinum/Charcoal */
 }
 
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-serif: "Bodoni Moda", Georgia, serif;
   --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
 
   /* Custom Gold overrides for Amber */
@@ -17,26 +17,26 @@
   --color-amber-100: #f9f0d3;
   --color-amber-200: #f2dfa3;
   --color-amber-300: #e7ca70;
-  --color-amber-400: #d4af37; /* Premium Gold */
+  --color-amber-400: #d4af37; /* Aurelian Gold */
   --color-amber-500: #c59f2a;
   --color-amber-600: #a7821d;
   --color-amber-700: #856417;
   --color-amber-800: #624811;
   --color-amber-900: #42300b;
 
-  /* Custom Platinum & Beige overrides for Zinc */
-  --color-zinc-50: #fbfbfa;    /* Platinum light */
-  --color-zinc-100: #f5f5f2;   /* Platinum sand 100 */
-  --color-zinc-200: #e9e8e3;   /* Platinum sand 200 */
-  --color-zinc-300: #d8d6cd;   /* Soft beige 300 */
-  --color-zinc-400: #b5b3a6;   /* Soft beige 400 */
-  --color-zinc-500: #8c8a7d;   /* Warm grey */
-  --color-zinc-600: #6b695e;
-  --color-zinc-700: #4e4c43;
-  --color-zinc-800: #33322b;   /* Luxury dark bronze-grey */
-  --color-zinc-850: #24231e;
-  --color-zinc-900: #171614;   /* Warm charcoal */
-  --color-zinc-950: #0f0e0c;   /* Deep warm black */
+  /* Custom Zinc scale for Beige/Platinum/Charcoal Light Theme */
+  --color-zinc-50: #ffffff;    /* Pure White */
+  --color-zinc-100: #fcf9f8;   /* Warm Beige */
+  --color-zinc-200: #f5f0eb;   /* Sand/Light Beige */
+  --color-zinc-300: #eae2d8;   /* Medium Beige */
+  --color-zinc-400: #d3c6b6;   /* Darker Beige */
+  --color-zinc-500: #8a7f70;   /* Muted Grey-Beige */
+  --color-zinc-600: #6b6154;   /* Secondary Text Grey */
+  --color-zinc-700: #4d4439;   /* Charcoal-Beige */
+  --color-zinc-800: #302a23;
+  --color-zinc-850: #24201a;
+  --color-zinc-900: #1c1915;   /* Warm Charcoal */
+  --color-zinc-950: #121212;   /* Platinum/Charcoal Black */
 }
 
 body {
@@ -59,22 +59,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #090909;
+  background-color: #fcf9f8;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #24231e;
+  background-color: #d3c6b6;
   border-radius: 9999px;
-  border: 2px solid #090909;
+  border: 2px solid #fcf9f8;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #33322b;
+  background-color: #8a7f70;
 }
 
 /* Accessibility focus outline */
 *:focus-visible {
-  outline: 2px solid #d4af37; /* Premium Gold */
+  outline: 2px solid #d4af37; /* Aurelian Gold */
   outline-offset: 2px;
 }
 
@@ -87,7 +87,7 @@ body {
   width: 100%;
   max-width: 1400px;
   height: 600px;
-  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.06) 0%, rgba(212, 175, 55, 0) 65%);
+  background: radial-gradient(circle at top, rgba(212, 175, 55, 0.04) 0%, rgba(212, 175, 55, 0) 65%);
   pointer-events: none;
   z-index: 0;
 }

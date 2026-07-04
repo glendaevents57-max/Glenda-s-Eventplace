@@ -346,7 +346,7 @@ export default function BookingWizard() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-xl p-6 md:p-10 shadow-2xl relative overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-zinc-200 bg-white p-6 md:p-10 shadow-2xl relative overflow-hidden">
       {/* Glow Effects */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -354,16 +354,16 @@ export default function BookingWizard() {
       {/* Header Wizard Indicators */}
       {step < 6 && (
         <div className="mb-10">
-          <div className="flex items-center justify-between text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-4">
+          <div className="flex items-center justify-between text-xs font-semibold text-zinc-550 uppercase tracking-widest mb-4">
             <span>Step {step} of 5</span>
-            <span className="text-amber-400 font-serif lowercase italic">Glenda Royale Events</span>
+            <span className="text-amber-600 font-serif lowercase italic">Glenda Royale Events</span>
           </div>
           <div className="flex gap-2">
             {[1, 2, 3, 4, 5].map((s) => (
               <div 
                 key={s} 
                 className={`h-1.5 flex-grow rounded-full transition-all duration-300 ${
-                  s <= step ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-zinc-800"
+                  s <= step ? "bg-gradient-to-r from-amber-500 to-amber-300" : "bg-zinc-200"
                 }`}
               />
             ))}
@@ -382,31 +382,31 @@ export default function BookingWizard() {
       {/* STEP 1: Date & Time Selector */}
       {step === 1 && (
         <div>
-          <h2 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2 mb-2">
-            <CalendarIcon className="w-6 h-6 text-amber-400" />
+          <h2 className="text-2xl font-serif font-bold text-zinc-950 flex items-center gap-2 mb-2">
+            <CalendarIcon className="w-6 h-6 text-amber-600" />
             Select Event Date & Time
           </h2>
-          <p className="text-sm text-zinc-400 mb-8 leading-relaxed">
+          <p className="text-sm text-zinc-650 mb-8 leading-relaxed">
             Exclusive 4-hour venue access. Choose your date below, then pick an available slot.
           </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             {/* Calendar Widget */}
-            <div className="lg:col-span-7 bg-zinc-950/40 border border-zinc-800/80 rounded-2xl p-4">
+            <div className="lg:col-span-7 bg-zinc-200/30 border border-zinc-250 rounded-2xl p-4">
               <div className="flex items-center justify-between mb-4 px-2">
-                <h3 className="font-serif font-bold text-zinc-200">
+                <h3 className="font-serif font-bold text-zinc-900">
                   {months[currentMonth]} {currentYear}
                 </h3>
                 <div className="flex gap-1">
                   <button 
                     onClick={handlePrevMonth} 
-                    className="p-2 rounded-lg border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-all"
+                    className="p-2 rounded-lg border border-zinc-250 bg-zinc-50 hover:bg-zinc-200 text-zinc-650 hover:text-zinc-900 transition-all"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button 
                     onClick={handleNextMonth} 
-                    className="p-2 rounded-lg border border-zinc-800 bg-zinc-900/60 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 transition-all"
+                    className="p-2 rounded-lg border border-zinc-250 bg-zinc-50 hover:bg-zinc-200 text-zinc-650 hover:text-zinc-900 transition-all"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -414,7 +414,7 @@ export default function BookingWizard() {
               </div>
 
               {/* Day Headers */}
-              <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-zinc-500 mb-2">
+              <div className="grid grid-cols-7 gap-1 text-center text-xs font-semibold text-zinc-550 mb-2">
                 <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
               </div>
 
@@ -449,7 +449,7 @@ export default function BookingWizard() {
                   } else if (isSelected) {
                     cellClass += "bg-gradient-to-r from-amber-500 to-amber-400 text-zinc-950 shadow-lg shadow-amber-500/10 cursor-pointer";
                   } else {
-                    cellClass += "bg-zinc-900/40 border border-zinc-800/30 text-zinc-300 hover:bg-zinc-800/50 hover:text-zinc-100 cursor-pointer";
+                    cellClass += "bg-zinc-100/40 border border-zinc-250/30 text-zinc-850 hover:bg-zinc-200/50 hover:text-zinc-950 cursor-pointer";
                   }
 
                   return (
@@ -472,7 +472,7 @@ export default function BookingWizard() {
             {/* Time Slot Picker */}
             <div className="lg:col-span-5 flex flex-col justify-between">
               <div>
-                <h3 className="text-lg font-serif font-bold text-zinc-200 mb-4">
+                <h3 className="text-lg font-serif font-bold text-zinc-900 mb-4">
                   {selectedDate ? formatSelectedDate() : "Choose a Date First"}
                 </h3>
 
@@ -486,17 +486,17 @@ export default function BookingWizard() {
                         onClick={() => setSelectedSlot("morning")}
                         className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
                           selectedSlot === "morning"
-                            ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
+                            ? "border-amber-400 bg-amber-500/5 text-amber-700 shadow-md shadow-amber-500/5"
                             : isSlotBookedOrBlocked(selectedDateStr, "morning")
-                            ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
-                            : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
+                            ? "border-zinc-300 bg-zinc-200/60 text-zinc-400 cursor-not-allowed"
+                            : "border-zinc-250 bg-zinc-100 text-zinc-850 hover:bg-zinc-50"
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <Clock className="w-5 h-5 text-amber-500/80" />
                           <div>
                             <div className="font-bold text-sm">Morning Event</div>
-                            <div className="text-xs text-zinc-500 mt-0.5">09:00 AM - 01:00 PM (4 Hrs)</div>
+                            <div className="text-xs text-zinc-550 mt-0.5">09:00 AM - 01:00 PM (4 Hrs)</div>
                           </div>
                         </div>
                         <div className="text-xs font-semibold uppercase tracking-wider">
@@ -510,17 +510,17 @@ export default function BookingWizard() {
                         onClick={() => setSelectedSlot("afternoon")}
                         className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
                           selectedSlot === "afternoon"
-                            ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
+                            ? "border-amber-400 bg-amber-500/5 text-amber-700 shadow-md shadow-amber-500/5"
                             : isSlotBookedOrBlocked(selectedDateStr, "afternoon")
-                            ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
-                            : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
+                            ? "border-zinc-300 bg-zinc-200/60 text-zinc-400 cursor-not-allowed"
+                            : "border-zinc-250 bg-zinc-100 text-zinc-850 hover:bg-zinc-50"
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <Clock className="w-5 h-5 text-amber-500/80" />
                           <div>
                             <div className="font-bold text-sm">Afternoon Event</div>
-                            <div className="text-xs text-zinc-500 mt-0.5">02:00 PM - 06:00 PM (4 Hrs)</div>
+                            <div className="text-xs text-zinc-550 mt-0.5">02:00 PM - 06:00 PM (4 Hrs)</div>
                           </div>
                         </div>
                         <div className="text-xs font-semibold uppercase tracking-wider">
@@ -534,17 +534,17 @@ export default function BookingWizard() {
                         onClick={() => setSelectedSlot("evening")}
                         className={`w-full p-4 rounded-xl border text-left flex items-center justify-between transition-all ${
                           selectedSlot === "evening"
-                            ? "border-amber-400 bg-amber-500/5 text-amber-300 shadow-md shadow-amber-500/5"
+                            ? "border-amber-400 bg-amber-500/5 text-amber-700 shadow-md shadow-amber-500/5"
                             : isSlotBookedOrBlocked(selectedDateStr, "evening")
-                            ? "border-zinc-900 bg-zinc-950/20 text-zinc-600 cursor-not-allowed"
-                            : "border-zinc-800 bg-zinc-900/20 text-zinc-300 hover:bg-zinc-900/60"
+                            ? "border-zinc-300 bg-zinc-200/60 text-zinc-400 cursor-not-allowed"
+                            : "border-zinc-250 bg-zinc-100 text-zinc-850 hover:bg-zinc-50"
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <Clock className="w-5 h-5 text-amber-500/80" />
                           <div>
                             <div className="font-bold text-sm">Evening Event</div>
-                            <div className="text-xs text-zinc-500 mt-0.5">07:00 PM - 11:00 PM (4 Hrs)</div>
+                            <div className="text-xs text-zinc-550 mt-0.5">07:00 PM - 11:00 PM (4 Hrs)</div>
                           </div>
                         </div>
                         <div className="text-xs font-semibold uppercase tracking-wider">
@@ -554,7 +554,7 @@ export default function BookingWizard() {
                     </div>
                   );
                 })() : (
-                  <div className="border border-dashed border-zinc-800 rounded-xl p-8 text-center text-zinc-500 text-sm">
+                  <div className="border border-dashed border-zinc-250 rounded-xl p-8 text-center text-zinc-550 text-sm">
                     Please select a date on the calendar first to view available time slots.
                   </div>
                 )}
@@ -567,8 +567,8 @@ export default function BookingWizard() {
       {/* STEP 2: Package & Theme Customizer */}
       {step === 2 && (
         <div className="space-y-6">
-          <h2 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2 mb-2">
-            <Sparkles className="w-6 h-6 text-amber-400" />
+          <h2 className="text-2xl font-serif font-bold text-zinc-950 flex items-center gap-2 mb-2">
+            <Sparkles className="w-6 h-6 text-amber-600" />
             Choose Package & Theme
           </h2>
 
@@ -578,8 +578,8 @@ export default function BookingWizard() {
               onClick={() => setIsSpecialRequest(false)}
               className={`p-6 rounded-2xl border text-left flex flex-col justify-between transition-all relative ${
                 !isSpecialRequest
-                  ? "border-amber-400 bg-amber-500/5 text-zinc-200"
-                  : "border-zinc-800 bg-zinc-900/20 text-zinc-400 hover:bg-zinc-900/40"
+                  ? "border-amber-400 bg-amber-500/5 text-zinc-900"
+                  : "border-zinc-250 bg-zinc-100 text-zinc-650 hover:bg-zinc-100/40"
               }`}
             >
               {!isSpecialRequest && (
@@ -588,15 +588,15 @@ export default function BookingWizard() {
                 </div>
               )}
               <div>
-                <span className="text-xs font-bold text-amber-400 tracking-wider uppercase mb-1 block">Classic Royale</span>
-                <h3 className="text-xl font-bold font-serif text-zinc-100 mb-2">Standard Package</h3>
-                <p className="text-xs text-zinc-500 leading-relaxed mb-4">
+                <span className="text-xs font-bold text-amber-600 tracking-wider uppercase mb-1 block">Classic Royale</span>
+                <h3 className="text-xl font-bold font-serif text-zinc-950 mb-2">Standard Package</h3>
+                <p className="text-xs text-zinc-550 leading-relaxed mb-4">
                   Fully curated experience for 10-20 guests. Includes premium styled grazing table, refreshments, and 3 signature savory food options.
                 </p>
               </div>
               <div className="mt-4">
-                <span className="text-2xl font-extrabold text-zinc-100">₱30,000</span>
-                <span className="text-xs text-zinc-500 ml-1">Flat Rate</span>
+                <span className="text-2xl font-extrabold text-zinc-950">₱30,000</span>
+                <span className="text-xs text-zinc-550 ml-1">Flat Rate</span>
               </div>
             </button>
 
@@ -605,8 +605,8 @@ export default function BookingWizard() {
               onClick={() => setIsSpecialRequest(true)}
               className={`p-6 rounded-2xl border text-left flex flex-col justify-between transition-all relative ${
                 isSpecialRequest
-                  ? "border-amber-400 bg-amber-500/5 text-zinc-200"
-                  : "border-zinc-800 bg-zinc-900/20 text-zinc-400 hover:bg-zinc-900/40"
+                  ? "border-amber-400 bg-amber-500/5 text-zinc-900"
+                  : "border-zinc-250 bg-zinc-100 text-zinc-650 hover:bg-zinc-100/40"
               }`}
             >
               {isSpecialRequest && (
@@ -615,35 +615,35 @@ export default function BookingWizard() {
                 </div>
               )}
               <div>
-                <span className="text-xs font-bold text-amber-400 tracking-wider uppercase mb-1 block">Bespoke Royale</span>
-                <h3 className="text-xl font-bold font-serif text-zinc-100 mb-2">Special Request Package</h3>
-                <p className="text-xs text-zinc-500 leading-relaxed mb-4">
+                <span className="text-xs font-bold text-amber-600 tracking-wider uppercase mb-1 block">Bespoke Royale</span>
+                <h3 className="text-xl font-bold font-serif text-zinc-950 mb-2">Special Request Package</h3>
+                <p className="text-xs text-zinc-550 leading-relaxed mb-4">
                   For custom catering menu adjustments, themed events with custom layouts, custom floral backdrops, or dedicated catering requirements.
                 </p>
               </div>
               <div className="mt-4">
-                <span className="text-2xl font-extrabold text-zinc-100">₱45,000</span>
-                <span className="text-xs text-zinc-500 ml-1">Starting Rate</span>
+                <span className="text-2xl font-extrabold text-zinc-950">₱45,000</span>
+                <span className="text-xs text-zinc-550 ml-1">Starting Rate</span>
               </div>
             </button>
           </div>
 
           {isSpecialRequest && (
-            <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-950/40 mt-4">
-              <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Describe your Special Requests</label>
+            <div className="p-4 rounded-xl border border-zinc-250 bg-zinc-200/40 mt-4">
+              <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Describe your Special Requests</label>
               <textarea
                 value={specialRequestDetails}
                 onChange={(e) => setSpecialRequestDetails(e.target.value)}
                 placeholder="Please describe custom food options, decoration needs, or specific setups required..."
                 rows={3}
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
           )}
 
           {/* Theme Picker */}
-          <div className="pt-4 border-t border-zinc-800/60">
-            <h3 className="text-lg font-serif font-bold text-zinc-200 mb-4">Select Event Styling Theme</h3>
+          <div className="pt-4 border-t border-zinc-250/60">
+            <h3 className="text-lg font-serif font-bold text-zinc-900 mb-4">Select Event Styling Theme</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {[
                 "Royal Gold & White",
@@ -659,8 +659,8 @@ export default function BookingWizard() {
                   onClick={() => setThemeName(theme)}
                   className={`p-3 text-xs font-bold rounded-xl border text-center transition-all ${
                     themeName === theme
-                      ? "border-amber-400 bg-amber-500/5 text-amber-300"
-                      : "border-zinc-850 bg-zinc-900/30 text-zinc-400 hover:border-zinc-750 hover:bg-zinc-900/60"
+                      ? "border-amber-400 bg-amber-500/5 text-amber-700"
+                      : "border-zinc-200 bg-zinc-100/30 text-zinc-650 hover:border-zinc-750 hover:bg-zinc-50"
                   }`}
                 >
                   {theme}
@@ -668,13 +668,13 @@ export default function BookingWizard() {
               ))}
             </div>
             <div className="mt-4">
-              <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Theme Details & Colors (Optional)</label>
+              <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Theme Details & Colors (Optional)</label>
               <input
                 type="text"
                 value={themeDetails}
                 onChange={(e) => setThemeDetails(e.target.value)}
                 placeholder="E.g., Pastel blue & gold colors for a Baptism, rustic greens, fairy lights..."
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
           </div>
@@ -684,18 +684,18 @@ export default function BookingWizard() {
       {/* STEP 3: Inclusions & Upgrades */}
       {step === 3 && (
         <div className="space-y-6">
-          <h2 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2 mb-2">
-            <Utensils className="w-6 h-6 text-amber-400" />
+          <h2 className="text-2xl font-serif font-bold text-zinc-950 flex items-center gap-2 mb-2">
+            <Utensils className="w-6 h-6 text-amber-600" />
             Curated Menu & Add-ons
           </h2>
-          <p className="text-sm text-zinc-400 leading-relaxed mb-4">
+          <p className="text-sm text-zinc-650 leading-relaxed mb-4">
             Customise your menu selections (included in package). Add premium upgrades below if desired.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Refreshments */}
-            <div className="p-5 rounded-2xl border border-zinc-800/80 bg-zinc-950/30">
-              <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30">
+              <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Coffee className="w-4 h-4" /> Refreshment Inclusions
               </h3>
               <div className="space-y-3">
@@ -703,7 +703,7 @@ export default function BookingWizard() {
                   "Fresh Fruit Juices (Signature blend)",
                   "Hot Coffee & Tea Selection"
                 ].map((item) => (
-                  <label key={item} className="flex items-start gap-3 text-sm text-zinc-300 cursor-pointer">
+                  <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={refreshmentChoices.some(c => item.startsWith(c.split(" (")[0]))}
@@ -724,8 +724,8 @@ export default function BookingWizard() {
             </div>
 
             {/* Savory Favorites */}
-            <div className="p-5 rounded-2xl border border-zinc-800/80 bg-zinc-950/30">
-              <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30">
+              <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Utensils className="w-4 h-4" /> Savory Favorites Inclusions
               </h3>
               <div className="space-y-3">
@@ -734,7 +734,7 @@ export default function BookingWizard() {
                   "Assorted Sandwiches (Tuna, Ham & Cheese)",
                   "Flavorful Mini Sliders (Gourmet Beef)"
                 ].map((item) => (
-                  <label key={item} className="flex items-start gap-3 text-sm text-zinc-300 cursor-pointer">
+                  <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={savoryChoices.some(c => item.startsWith(c.split(" (")[0]))}
@@ -756,9 +756,9 @@ export default function BookingWizard() {
           </div>
 
           {/* Premium Upgrades */}
-          <div className="pt-6 border-t border-zinc-800/60">
-            <h3 className="text-lg font-serif font-bold text-zinc-200 mb-4 flex items-center gap-2">
-              <Award className="w-5 h-5 text-amber-400" /> Premium Experience Upgrades (Optional)
+          <div className="pt-6 border-t border-zinc-250/60">
+            <h3 className="text-lg font-serif font-bold text-zinc-900 mb-4 flex items-center gap-2">
+              <Award className="w-5 h-5 text-amber-600" /> Premium Experience Upgrades (Optional)
             </h3>
             <div className="space-y-3">
               {UPGRADE_OPTIONS.map((opt) => (
@@ -768,32 +768,32 @@ export default function BookingWizard() {
                   onClick={() => toggleUpgrade(opt.id)}
                   className={`w-full p-4 rounded-xl border text-left flex justify-between items-center transition-all ${
                     upgrades.includes(opt.id)
-                      ? "border-amber-400 bg-amber-500/5 text-zinc-200"
-                      : "border-zinc-850 bg-zinc-900/10 text-zinc-400 hover:bg-zinc-900/30"
+                      ? "border-amber-400 bg-amber-500/5 text-zinc-900"
+                      : "border-zinc-200 bg-zinc-100/10 text-zinc-650 hover:bg-zinc-100/30"
                   }`}
                 >
                   <div className="pr-4">
-                    <div className="font-bold text-zinc-200 text-sm">{opt.name}</div>
-                    <div className="text-xs text-zinc-500 mt-1">{opt.description}</div>
+                    <div className="font-bold text-zinc-900 text-sm">{opt.name}</div>
+                    <div className="text-xs text-zinc-550 mt-1">{opt.description}</div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className="font-extrabold text-amber-400 text-sm">+₱{opt.price.toLocaleString()}</div>
+                    <div className="font-extrabold text-amber-600 text-sm">+₱{opt.price.toLocaleString()}</div>
                   </div>
                 </button>
               ))}
 
               {/* Extra Guests Slider */}
-              <div className="p-4 rounded-xl border border-zinc-850 bg-zinc-900/10">
+              <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-100/10">
                 <div className="flex justify-between items-center mb-2">
                   <div>
-                    <div className="font-bold text-zinc-200 text-sm">Additional Guests</div>
-                    <div className="text-xs text-zinc-500">For events between 21 and 30 guests max</div>
+                    <div className="font-bold text-zinc-900 text-sm">Additional Guests</div>
+                    <div className="text-xs text-zinc-550">For events between 21 and 30 guests max</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-extrabold text-amber-400 text-sm">
+                    <div className="font-extrabold text-amber-600 text-sm">
                       {extraGuests > 0 ? `+₱${(extraGuests * GUEST_UPGRADE_PRICE_PER_HEAD).toLocaleString()}` : "Included"}
                     </div>
-                    <div className="text-xs text-zinc-500">{extraGuests} extra guests</div>
+                    <div className="text-xs text-zinc-550">{extraGuests} extra guests</div>
                   </div>
                 </div>
                 <input
@@ -802,9 +802,9 @@ export default function BookingWizard() {
                   max="10"
                   value={extraGuests}
                   onChange={(e) => setExtraGuests(parseInt(e.target.value))}
-                  className="w-full accent-amber-400 bg-zinc-800 rounded-lg appearance-none h-1.5"
+                  className="w-full accent-amber-400 bg-zinc-200 rounded-lg appearance-none h-1.5"
                 />
-                <div className="flex justify-between text-[10px] text-zinc-600 font-bold uppercase mt-1">
+                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase mt-1">
                   <span>Up to 20 Guests (Included)</span>
                   <span>30 Guests Max</span>
                 </div>
@@ -817,55 +817,55 @@ export default function BookingWizard() {
       {/* STEP 4: Guest & Contact Info */}
       {step === 4 && (
         <div className="space-y-6">
-          <h2 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2 mb-2">
-            <User className="w-6 h-6 text-amber-400" />
+          <h2 className="text-2xl font-serif font-bold text-zinc-950 flex items-center gap-2 mb-2">
+            <User className="w-6 h-6 text-amber-600" />
             Contact & Guest Details
           </h2>
-          <p className="text-sm text-zinc-400 mb-6">
+          <p className="text-sm text-zinc-650 mb-6">
             Enter your details so Kyle Adrianna Sayas can contact you regarding your celebration.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Your Name</label>
+              <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Your Name</label>
               <input
                 type="text"
                 value={bookersName}
                 onChange={(e) => setBookersName(e.target.value)}
                 placeholder="Full Name"
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
             
             <div>
-              <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Phone Number</label>
+              <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Phone Number</label>
               <input
                 type="text"
                 value={bookersPhone}
                 onChange={(e) => setBookersPhone(e.target.value)}
                 placeholder="E.g., 0912 718 8479"
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Email Address</label>
+              <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Email Address</label>
               <input
                 type="email"
                 value={bookersEmail}
                 onChange={(e) => setBookersEmail(e.target.value)}
                 placeholder="name@example.com"
-                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Event Type</label>
+                <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Event Type</label>
                 <select
                   value={eventType}
                   onChange={(e) => setEventType(e.target.value)}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                  className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="Birthday">Birthday</option>
                   <option value="Baptism">Baptism</option>
@@ -878,14 +878,14 @@ export default function BookingWizard() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-zinc-400 uppercase mb-2">Base Guests (10-20)</label>
+                <label className="block text-xs font-bold text-zinc-650 uppercase mb-2">Base Guests (10-20)</label>
                 <input
                   type="number"
                   min="10"
                   max="20"
                   value={visitorsCount}
                   onChange={(e) => setVisitorsCount(Math.min(20, Math.max(10, parseInt(e.target.value) || 10)))}
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-lg p-3 text-sm text-zinc-200 focus:outline-none focus:border-amber-400"
+                  className="w-full bg-zinc-100 border border-zinc-250 rounded-lg p-3 text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
             </div>
@@ -896,39 +896,39 @@ export default function BookingWizard() {
       {/* STEP 5: Cost Summary & Payment Terms */}
       {step === 5 && (
         <div className="space-y-6">
-          <h2 className="text-2xl font-serif font-bold text-zinc-100 flex items-center gap-2 mb-2">
-            <CreditCard className="w-6 h-6 text-amber-400" />
+          <h2 className="text-2xl font-serif font-bold text-zinc-950 flex items-center gap-2 mb-2">
+            <CreditCard className="w-6 h-6 text-amber-600" />
             Review & Booking Terms
           </h2>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-7 space-y-4">
-              <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/30">
-                <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Event Summary</h3>
+              <div className="p-5 rounded-2xl border border-zinc-250 bg-white/30">
+                <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-3">Event Summary</h3>
                 <div className="space-y-2 text-sm">
-                  <div className="flex justify-between"><span className="text-zinc-500">Date:</span><span className="text-zinc-200 font-bold">{formatSelectedDate()}</span></div>
-                  <div className="flex justify-between"><span className="text-zinc-500">Time Slot:</span><span className="text-zinc-200 font-bold capitalize">{selectedSlot} Event</span></div>
-                  <div className="flex justify-between"><span className="text-zinc-500">Occasion:</span><span className="text-zinc-200 font-bold">{eventType}</span></div>
-                  <div className="flex justify-between"><span className="text-zinc-500">Guests:</span><span className="text-zinc-200 font-bold">{visitorsCount + extraGuests} Guests</span></div>
-                  <div className="flex justify-between"><span className="text-zinc-500">Styling Theme:</span><span className="text-zinc-200 font-bold">{themeName}</span></div>
+                  <div className="flex justify-between"><span className="text-zinc-550">Date:</span><span className="text-zinc-900 font-bold">{formatSelectedDate()}</span></div>
+                  <div className="flex justify-between"><span className="text-zinc-550">Time Slot:</span><span className="text-zinc-900 font-bold capitalize">{selectedSlot} Event</span></div>
+                  <div className="flex justify-between"><span className="text-zinc-550">Occasion:</span><span className="text-zinc-900 font-bold">{eventType}</span></div>
+                  <div className="flex justify-between"><span className="text-zinc-550">Guests:</span><span className="text-zinc-900 font-bold">{visitorsCount + extraGuests} Guests</span></div>
+                  <div className="flex justify-between"><span className="text-zinc-550">Styling Theme:</span><span className="text-zinc-900 font-bold">{themeName}</span></div>
                 </div>
               </div>
 
               {/* Payment Plan Options */}
-              <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/30">
-                <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Select Payment Option</h3>
+              <div className="p-5 rounded-2xl border border-zinc-250 bg-white/30">
+                <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-3">Select Payment Option</h3>
                 <div className="grid grid-cols-2 gap-3 mb-1">
                   <button
                     type="button"
                     onClick={() => setPaymentPlan("downpayment")}
                     className={`p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center cursor-pointer ${
                       paymentPlan === "downpayment"
-                        ? "border-amber-400 bg-amber-500/5 text-amber-300"
-                        : "border-zinc-850 bg-zinc-900/20 text-zinc-400 hover:bg-zinc-900/40"
+                        ? "border-amber-400 bg-amber-500/5 text-amber-700"
+                        : "border-zinc-200 bg-zinc-100 text-zinc-650 hover:bg-zinc-100/40"
                     }`}
                   >
                     <span className="font-bold text-xs">50% Downpayment</span>
-                    <span className="text-[10px] text-zinc-500 mt-1">₱{pricing.downpayment.toLocaleString()} now</span>
+                    <span className="text-[10px] text-zinc-550 mt-1">₱{pricing.downpayment.toLocaleString()} now</span>
                   </button>
 
                   <button
@@ -936,19 +936,19 @@ export default function BookingWizard() {
                     onClick={() => setPaymentPlan("full")}
                     className={`p-3 rounded-xl border text-center transition-all flex flex-col justify-center items-center cursor-pointer ${
                       paymentPlan === "full"
-                        ? "border-amber-400 bg-amber-500/5 text-amber-300"
-                        : "border-zinc-850 bg-zinc-900/20 text-zinc-400 hover:bg-zinc-900/40"
+                        ? "border-amber-400 bg-amber-500/5 text-amber-700"
+                        : "border-zinc-200 bg-zinc-100 text-zinc-650 hover:bg-zinc-100/40"
                     }`}
                   >
                     <span className="font-bold text-xs">100% Full Payment</span>
-                    <span className="text-[10px] text-zinc-500 mt-1">₱{pricing.total.toLocaleString()} now</span>
+                    <span className="text-[10px] text-zinc-550 mt-1">₱{pricing.total.toLocaleString()} now</span>
                   </button>
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl border border-zinc-800 bg-zinc-950/30">
-                <h3 className="text-sm font-bold text-amber-400 uppercase tracking-wider mb-3">Payment Terms Policy</h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
+              <div className="p-5 rounded-2xl border border-zinc-250 bg-white/30">
+                <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-3">Payment Terms Policy</h3>
+                <p className="text-xs text-zinc-650 leading-relaxed">
                   {paymentPlan === "downpayment" ? (
                     "At Glenda Royale Events, a **50% downpayment** is required to secure your exclusive booking slot. Once submitted, your slot will be temporarily held for **2 hours** waiting for proof of downpayment. The remaining 50% balance must be settled at the start of your event."
                   ) : (
@@ -959,51 +959,51 @@ export default function BookingWizard() {
             </div>
 
             {/* Dynamic Receipt Panel */}
-            <div className="lg:col-span-5 bg-gradient-to-b from-zinc-900 to-zinc-950 border border-amber-400/20 rounded-2xl p-6 shadow-xl relative">
-              <h3 className="font-serif font-bold text-zinc-200 text-lg mb-4 border-b border-zinc-800 pb-3 flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-amber-400" /> Pricing Receipt
+            <div className="lg:col-span-5 bg-gradient-to-b from-zinc-50 to-zinc-100 border border-amber-400/20 rounded-2xl p-6 shadow-xl relative">
+              <h3 className="font-serif font-bold text-zinc-900 text-lg mb-4 border-b border-zinc-250 pb-3 flex items-center gap-2">
+                <DollarSign className="w-5 h-5 text-amber-600" /> Pricing Receipt
               </h3>
               
               <div className="space-y-3 text-xs mb-6">
                 <div className="flex justify-between">
-                  <span className="text-zinc-500">Base Package</span>
-                  <span className="text-zinc-300">₱{pricing.packageBase.toLocaleString()}</span>
+                  <span className="text-zinc-550">Base Package</span>
+                  <span className="text-zinc-850">₱{pricing.packageBase.toLocaleString()}</span>
                 </div>
                 {pricing.upgradesTotal > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-zinc-500">Upgrades/Add-ons</span>
-                    <span className="text-zinc-300">₱{pricing.upgradesTotal.toLocaleString()}</span>
+                    <span className="text-zinc-550">Upgrades/Add-ons</span>
+                    <span className="text-zinc-850">₱{pricing.upgradesTotal.toLocaleString()}</span>
                   </div>
                 )}
                 {pricing.guestUpgradeCost > 0 && (
                   <div className="flex justify-between">
-                    <span className="text-zinc-500">Extra Guests ({extraGuests} head)</span>
-                    <span className="text-zinc-300">+₱{pricing.guestUpgradeCost.toLocaleString()}</span>
+                    <span className="text-zinc-550">Extra Guests ({extraGuests} head)</span>
+                    <span className="text-zinc-850">+₱{pricing.guestUpgradeCost.toLocaleString()}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-sm font-bold text-zinc-200 border-t border-zinc-850 pt-3">
+                <div className="flex justify-between text-sm font-bold text-zinc-900 border-t border-zinc-200 pt-3">
                   <span>Total Rate</span>
-                  <span className="text-amber-400">₱{pricing.total.toLocaleString()}</span>
+                  <span className="text-amber-600">₱{pricing.total.toLocaleString()}</span>
                 </div>
               </div>
 
-              <div className="space-y-3 border-t border-dashed border-zinc-800 pt-4">
+              <div className="space-y-3 border-t border-dashed border-zinc-250 pt-4">
                 <div className="flex justify-between items-center bg-amber-400/5 border border-amber-400/10 p-3 rounded-xl">
                   <div>
-                    <span className="text-[10px] font-bold text-amber-400 uppercase block">
+                    <span className="text-[10px] font-bold text-amber-600 uppercase block">
                       {paymentPlan === "downpayment" ? "50% Downpayment Due" : "Amount to Settle"}
                     </span>
-                    <span className="text-xs text-zinc-400">To secure reservation</span>
+                    <span className="text-xs text-zinc-650">To secure reservation</span>
                   </div>
-                  <span className="text-lg font-extrabold text-amber-300">₱{pricing.downpayment.toLocaleString()}</span>
+                  <span className="text-lg font-extrabold text-amber-700">₱{pricing.downpayment.toLocaleString()}</span>
                 </div>
 
-                <div className="flex justify-between items-center p-3 rounded-xl bg-zinc-950 border border-zinc-850">
+                <div className="flex justify-between items-center p-3 rounded-xl bg-white border border-zinc-200">
                   <div>
-                    <span className="text-[10px] font-bold text-zinc-500 uppercase block">Remaining Balance</span>
-                    <span className="text-xs text-zinc-500">Due at event start</span>
+                    <span className="text-[10px] font-bold text-zinc-550 uppercase block">Remaining Balance</span>
+                    <span className="text-xs text-zinc-550">Due at event start</span>
                   </div>
-                  <span className="text-md font-bold text-zinc-400">₱{pricing.remaining.toLocaleString()}</span>
+                  <span className="text-md font-bold text-zinc-650">₱{pricing.remaining.toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -1014,30 +1014,30 @@ export default function BookingWizard() {
       {/* STEP 6: Success Page */}
       {step === 6 && successData && (
         <div className="text-center py-8 space-y-6">
-          <div className="inline-flex p-4 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400 mb-2">
+          <div className="inline-flex p-4 rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-600 mb-2">
             <Sparkles className="w-12 h-12" />
           </div>
           
-          <h2 className="text-3xl font-serif font-bold text-zinc-100">Booking Draft Submitted!</h2>
+          <h2 className="text-3xl font-serif font-bold text-zinc-950">Booking Draft Submitted!</h2>
           
-          <p className="text-sm text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            Thank you, <strong className="text-zinc-200">{bookersName}</strong>! Your exclusive 4-hour reservation slot for the <strong className="text-zinc-200">{eventType}</strong> has been drafted. 
+          <p className="text-sm text-zinc-650 max-w-xl mx-auto leading-relaxed">
+            Thank you, <strong className="text-zinc-900">{bookersName}</strong>! Your exclusive 4-hour reservation slot for the <strong className="text-zinc-900">{eventType}</strong> has been drafted. 
           </p>
 
-          <div className="max-w-lg mx-auto bg-zinc-950/60 border border-zinc-800 rounded-2xl p-6 text-left space-y-4">
-            <div className="flex justify-between items-center border-b border-zinc-800 pb-3 text-xs">
-              <span className="text-zinc-500 uppercase font-bold tracking-wider">Booking ID:</span>
-              <span className="font-mono text-amber-400 font-bold bg-zinc-900 px-2.5 py-1 rounded border border-zinc-800">{successData.bookingId}</span>
+          <div className="max-w-lg mx-auto bg-zinc-100 border border-zinc-250 rounded-2xl p-6 text-left space-y-4">
+            <div className="flex justify-between items-center border-b border-zinc-250 pb-3 text-xs">
+              <span className="text-zinc-550 uppercase font-bold tracking-wider">Booking ID:</span>
+              <span className="font-mono text-amber-600 font-bold bg-zinc-100 px-2.5 py-1 rounded border border-zinc-250">{successData.bookingId}</span>
             </div>
 
-            <div className="space-y-2 text-sm text-zinc-300">
-              <div className="font-bold text-zinc-200 mb-1">
+            <div className="space-y-2 text-sm text-zinc-850">
+              <div className="font-bold text-zinc-900 mb-1">
                 {paymentPlan === "downpayment" ? "Downpayment instructions:" : "Payment instructions:"}
               </div>
-              <p className="text-xs text-zinc-400 leading-normal">
+              <p className="text-xs text-zinc-650 leading-normal">
                 Please transfer the **{paymentPlan === "downpayment" ? "50% downpayment" : "100% full payment"} of ₱{pricing.downpayment.toLocaleString()}** to secure your date:
               </p>
-              <div className="bg-zinc-900/60 p-3 rounded-lg border border-zinc-850 space-y-1 font-mono text-xs">
+              <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200 space-y-1 font-mono text-xs">
                 <div>Bank: **GCash / BPI**</div>
                 <div>Account Name: **Kyle Adrianna Sayas**</div>
                 <div>Account Number: **0912 718 8479**</div>
@@ -1060,7 +1060,7 @@ export default function BookingWizard() {
                 setBookersEmail("");
                 setBookersPhone("");
               }}
-              className="w-full h-11 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 font-medium rounded-xl text-sm transition-all"
+              className="w-full h-11 bg-zinc-200 hover:bg-zinc-300 text-zinc-850 font-bold rounded-xl text-sm transition-all uppercase tracking-wider"
             >
               Book Another Event
             </button>
@@ -1070,12 +1070,12 @@ export default function BookingWizard() {
 
       {/* Footer Navigation Buttons */}
       {step < 6 && (
-        <div className="mt-10 pt-6 border-t border-zinc-800/60 flex justify-between">
+        <div className="mt-10 pt-6 border-t border-zinc-250/60 flex justify-between">
           <button
             type="button"
             disabled={step === 1 || loading}
             onClick={() => validateStep(step - 1)}
-            className="h-11 px-5 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 font-bold rounded-xl text-xs flex items-center gap-2 transition-all disabled:opacity-50 disabled:pointer-events-none"
+            className="h-11 px-5 bg-zinc-100 border border-zinc-250 hover:bg-zinc-200 text-zinc-650 hover:text-zinc-900 font-bold rounded-xl text-xs flex items-center gap-2 transition-all disabled:opacity-50 disabled:pointer-events-none"
           >
             <ChevronLeft className="w-4 h-4" /> Back
           </button>
@@ -1084,7 +1084,7 @@ export default function BookingWizard() {
             <button
               type="button"
               onClick={() => validateStep(step + 1)}
-              className="h-11 px-6 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-zinc-950 font-bold rounded-xl text-xs flex items-center gap-2 transition-all"
+              className="h-11 px-6 bg-amber-400 hover:bg-amber-500 text-zinc-950 font-bold rounded-xl text-xs flex items-center gap-2 transition-all"
             >
               Continue <ChevronRight className="w-4 h-4" />
             </button>
@@ -1093,7 +1093,7 @@ export default function BookingWizard() {
               type="button"
               disabled={loading}
               onClick={handleSubmitBooking}
-              className="h-11 px-8 bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-zinc-950 font-bold rounded-xl text-xs flex items-center gap-2 transition-all disabled:opacity-50"
+              className="h-11 px-8 bg-amber-400 hover:bg-amber-500 text-zinc-950 font-bold rounded-xl text-xs flex items-center gap-2 transition-all disabled:opacity-50"
             >
               {loading ? "Submitting..." : "Submit Booking & Hold Slot"}
             </button>
