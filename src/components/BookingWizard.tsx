@@ -14,7 +14,9 @@ import {
   AlertCircle, 
   Coffee, 
   Award,
-  DollarSign
+  DollarSign,
+  Apple,
+  IceCream
 } from "lucide-react";
 
 interface BookedSlot {
@@ -45,7 +47,7 @@ export default function BookingWizard() {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successData, setSuccessData] = useState<{ bookingId: string; expiryTime: string } | null>(null);
+  const [successData, setSuccessData] = useState<{ bookingId: string; expiryTime: string | null } | null>(null);
 
   // --- Step 1 States (Date & Time) ---
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -68,13 +70,14 @@ export default function BookingWizard() {
     "Fresh Fruit Juices",
     "Hot Coffee & Tea"
   ]);
-  const [savoryChoices, setSavoryChoices] = useState<string[]>([
-    "Homemade Signature Big Siomai",
-    "Assorted Sandwiches",
-    "Flavorful Mini Sliders"
+  const [platterChoices, setPlatterChoices] = useState<string[]>([
+    "Fresh Fruit Platter",
+    "Artisan Cheese Board"
   ]);
+  const [savoryChoices, setSavoryChoices] = useState<string[]>([]);
+  const [dessertChoices, setDessertChoices] = useState<string[]>([]);
   const [upgrades, setUpgrades] = useState<string[]>([]);
-  const [extraGuests, setExtraGuests] = useState(0); // 0 to 10 extra guests (on top of 20 max)
+  const extraGuests = 0; // Removed extra guests slider (always 0)
 
   // --- Step 4 States (Contact Info) ---
   const [bookersName, setBookersName] = useState("");
@@ -112,14 +115,14 @@ export default function BookingWizard() {
 
   // Dynamic price calculation
   const getPricing = () => {
-    let packageBase = isSpecialRequest ? SPECIAL_REQUEST_PRICE : BASE_PRICE;
-    let upgradesTotal = upgrades.reduce((acc, upgradeId) => {
+    const packageBase = isSpecialRequest ? SPECIAL_REQUEST_PRICE : BASE_PRICE;
+    const upgradesTotal = upgrades.reduce((acc, upgradeId) => {
       const upgrade = UPGRADE_OPTIONS.find((u) => u.id === upgradeId);
       return acc + (upgrade ? upgrade.price : 0);
     }, 0);
     
     // Guest upgrade
-    let guestUpgradeCost = extraGuests * GUEST_UPGRADE_PRICE_PER_HEAD;
+    const guestUpgradeCost = extraGuests * GUEST_UPGRADE_PRICE_PER_HEAD;
     
     const total = packageBase + upgradesTotal + guestUpgradeCost;
     const downpayment = paymentPlan === "downpayment" ? total * 0.5 : total;
@@ -245,6 +248,8 @@ export default function BookingWizard() {
       custom_menu_selection: {
         refreshments: refreshmentChoices,
         savory: savoryChoices,
+        platters: platterChoices,
+        desserts: dessertChoices,
         upgrades: upgrades.map(u => UPGRADE_OPTIONS.find(op => op.id === u)?.name || ""),
       },
       is_special_request: isSpecialRequest,
@@ -303,8 +308,10 @@ export default function BookingWizard() {
       }
     }
     if (step === 3 && nextStep > 3) {
-      if (refreshmentChoices.length === 0 && savoryChoices.length === 0) {
-        setError("Please pick at least one menu inclusion.");
+      const combinedCount = savoryChoices.length + dessertChoices.length;
+      const menuLimit = isSpecialRequest ? 6 : 4;
+      if (combinedCount !== menuLimit) {
+        setError(`Please select exactly ${menuLimit} items from Savory Appetizers and Sweet Desserts combined (currently selected: ${combinedCount}).`);
         return;
       }
     }
@@ -575,7 +582,19 @@ export default function BookingWizard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Standard Package */}
             <button
-              onClick={() => setIsSpecialRequest(false)}
+              onClick={() => {
+                setIsSpecialRequest(false);
+                setSavoryChoices([]);
+                setDessertChoices([]);
+                setRefreshmentChoices([
+                  "Fresh Fruit Juices",
+                  "Hot Coffee & Tea"
+                ]);
+                setPlatterChoices([
+                  "Fresh Fruit Platter",
+                  "Artisan Cheese Board"
+                ]);
+              }}
               className={`p-6 rounded-2xl border text-left flex flex-col justify-between transition-all relative ${
                 !isSpecialRequest
                   ? "border-amber-400 bg-amber-500/5 text-zinc-900"
@@ -591,7 +610,7 @@ export default function BookingWizard() {
                 <span className="text-xs font-bold text-amber-600 tracking-wider uppercase mb-1 block">Classic Royale</span>
                 <h3 className="text-xl font-bold font-serif text-zinc-950 mb-2">Standard Package</h3>
                 <p className="text-xs text-zinc-550 leading-relaxed mb-4">
-                  Fully curated experience for 10-20 guests. Includes premium styled grazing table, refreshments, and 3 signature savory food options.
+                  Fully curated experience for 10-20 guests. Includes platters & boards, refreshments, and a combined total of 4 items from savory/dessert selections.
                 </p>
               </div>
               <div className="mt-4">
@@ -600,9 +619,21 @@ export default function BookingWizard() {
               </div>
             </button>
 
-            {/* Special Request Package */}
+            {/* Premium Package */}
             <button
-              onClick={() => setIsSpecialRequest(true)}
+              onClick={() => {
+                setIsSpecialRequest(true);
+                setSavoryChoices([]);
+                setDessertChoices([]);
+                setRefreshmentChoices([
+                  "Fresh Fruit Juices",
+                  "Hot Coffee & Tea"
+                ]);
+                setPlatterChoices([
+                  "Fresh Fruit Platter",
+                  "Artisan Cheese Board"
+                ]);
+              }}
               className={`p-6 rounded-2xl border text-left flex flex-col justify-between transition-all relative ${
                 isSpecialRequest
                   ? "border-amber-400 bg-amber-500/5 text-zinc-900"
@@ -616,9 +647,9 @@ export default function BookingWizard() {
               )}
               <div>
                 <span className="text-xs font-bold text-amber-600 tracking-wider uppercase mb-1 block">Bespoke Royale</span>
-                <h3 className="text-xl font-bold font-serif text-zinc-950 mb-2">Special Request Package</h3>
+                <h3 className="text-xl font-bold font-serif text-zinc-950 mb-2">Premium Package</h3>
                 <p className="text-xs text-zinc-550 leading-relaxed mb-4">
-                  For custom catering menu adjustments, themed events with custom layouts, custom floral backdrops, or dedicated catering requirements.
+                  For custom catering menu adjustments, themed events with custom layouts, custom floral backdrops. Includes platters & boards, refreshments, and a combined total of 6 items from savory/dessert selections.
                 </p>
               </div>
               <div className="mt-4">
@@ -692,65 +723,174 @@ export default function BookingWizard() {
             Customise your menu selections (included in package). Add premium upgrades below if desired.
           </p>
 
+          {/* Combined Selection Progress Alert */}
+          <div className={`p-4 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+            (savoryChoices.length + dessertChoices.length) === (isSpecialRequest ? 6 : 4) 
+              ? 'bg-emerald-500/5 border-emerald-400/20 text-emerald-800' 
+              : 'bg-amber-500/5 border-amber-400/20 text-amber-800'
+          }`}>
+            <div>
+              <div className="text-xs font-bold uppercase tracking-wider">
+                Savory & Dessert Selections Combined
+              </div>
+              <div className="text-xs text-zinc-550 mt-0.5">
+                {isSpecialRequest 
+                  ? "Premium Package: Pick any combination of 6 items from Savory Appetizers and Sweet Desserts."
+                  : "Standard Package: Pick any combination of 4 items from Savory Appetizers and Sweet Desserts."}
+              </div>
+            </div>
+            <div className="text-sm font-extrabold flex-shrink-0">
+              {savoryChoices.length + dessertChoices.length} / {isSpecialRequest ? 6 : 4} Selected
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Refreshments */}
-            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30">
-              <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Coffee className="w-4 h-4" /> Refreshment Inclusions
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "Fresh Fruit Juices (Signature blend)",
-                  "Hot Coffee & Tea Selection"
-                ].map((item) => (
-                  <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={refreshmentChoices.some(c => item.startsWith(c.split(" (")[0]))}
-                      onChange={(e) => {
-                        const coreName = item.split(" (")[0];
-                        if (e.target.checked) {
-                          setRefreshmentChoices([...refreshmentChoices, coreName]);
-                        } else {
-                          setRefreshmentChoices(refreshmentChoices.filter(c => c !== coreName));
-                        }
-                      }}
-                      className="mt-1 accent-amber-400 rounded"
-                    />
-                    <span>{item}</span>
-                  </label>
-                ))}
+            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30 flex flex-col justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <Coffee className="w-4 h-4" /> Refreshments (Included)
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    "Fresh Fruit Juices",
+                    "Hot Coffee & Tea"
+                  ].map((item) => (
+                    <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={refreshmentChoices.includes(item)}
+                        disabled={true}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setRefreshmentChoices([...refreshmentChoices, item]);
+                          } else {
+                            setRefreshmentChoices(refreshmentChoices.filter(c => c !== item));
+                          }
+                        }}
+                        className="mt-1 accent-amber-400 rounded disabled:opacity-75"
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
 
-            {/* Savory Favorites */}
-            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30">
-              <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-4 flex items-center gap-2">
-                <Utensils className="w-4 h-4" /> Savory Favorites Inclusions
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "Homemade Signature Big Siomai",
-                  "Assorted Sandwiches (Tuna, Ham & Cheese)",
-                  "Flavorful Mini Sliders (Gourmet Beef)"
-                ].map((item) => (
-                  <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={savoryChoices.some(c => item.startsWith(c.split(" (")[0]))}
-                      onChange={(e) => {
-                        const coreName = item.split(" (")[0];
-                        if (e.target.checked) {
-                          setSavoryChoices([...savoryChoices, coreName]);
-                        } else {
-                          setSavoryChoices(savoryChoices.filter(c => c !== coreName));
-                        }
-                      }}
-                      className="mt-1 accent-amber-400 rounded"
-                    />
-                    <span>{item}</span>
-                  </label>
-                ))}
+            {/* Platters & Boards */}
+            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30 flex flex-col justify-between">
+              <div>
+                <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-4 flex items-center gap-2">
+                  <Apple className="w-4 h-4" /> Platters & Boards (Included)
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    "Fresh Fruit Platter",
+                    "Artisan Cheese Board"
+                  ].map((item) => (
+                    <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={platterChoices.includes(item)}
+                        disabled={true}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setPlatterChoices([...platterChoices, item]);
+                          } else {
+                            setPlatterChoices(platterChoices.filter(c => c !== item));
+                          }
+                        }}
+                        className="mt-1 accent-amber-400 rounded disabled:opacity-75"
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Savory Appetizers & Bites */}
+            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider flex items-center gap-2">
+                    <Utensils className="w-4 h-4" /> Savory Appetizers
+                  </h3>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-650">
+                    {savoryChoices.length} selected
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    "Charcuterie Selection",
+                    "Caprese Skewers",
+                    "Bruschetta Bites",
+                    "Veggie Cups with Dip",
+                    "Mini Sliders",
+                    "Savory Tarts / Quiches",
+                    "Smoked Salmon Bites",
+                    "Antipasto Cups",
+                    "Filipino Lumpia",
+                    "Chicken / Beef Skewers"
+                  ].map((item) => (
+                    <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={savoryChoices.includes(item)}
+                        disabled={!savoryChoices.includes(item) && (savoryChoices.length + dessertChoices.length) >= (isSpecialRequest ? 6 : 4)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSavoryChoices([...savoryChoices, item]);
+                          } else {
+                            setSavoryChoices(savoryChoices.filter(c => c !== item));
+                          }
+                        }}
+                        className="mt-1 accent-amber-400 rounded"
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Sweet Desserts */}
+            <div className="p-5 rounded-2xl border border-zinc-200 bg-white/30 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider flex items-center gap-2">
+                    <IceCream className="w-4 h-4" /> Sweet Desserts
+                  </h3>
+                  <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-650">
+                    {dessertChoices.length} selected
+                  </span>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    "Mini Dessert Cups",
+                    "Macarons",
+                    "Chocolate Truffles",
+                    "Mini Cupcakes",
+                    "Fruit Tartlets"
+                  ].map((item) => (
+                    <label key={item} className="flex items-start gap-3 text-sm text-zinc-850 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={dessertChoices.includes(item)}
+                        disabled={!dessertChoices.includes(item) && (savoryChoices.length + dessertChoices.length) >= (isSpecialRequest ? 6 : 4)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setDessertChoices([...dessertChoices, item]);
+                          } else {
+                            setDessertChoices(dessertChoices.filter(c => c !== item));
+                          }
+                        }}
+                        className="mt-1 accent-amber-400 rounded"
+                      />
+                      <span>{item}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -782,33 +922,7 @@ export default function BookingWizard() {
                 </button>
               ))}
 
-              {/* Extra Guests Slider */}
-              <div className="p-4 rounded-xl border border-zinc-200 bg-zinc-100/10">
-                <div className="flex justify-between items-center mb-2">
-                  <div>
-                    <div className="font-bold text-zinc-900 text-sm">Additional Guests</div>
-                    <div className="text-xs text-zinc-550">For events between 21 and 30 guests max</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-extrabold text-amber-600 text-sm">
-                      {extraGuests > 0 ? `+₱${(extraGuests * GUEST_UPGRADE_PRICE_PER_HEAD).toLocaleString()}` : "Included"}
-                    </div>
-                    <div className="text-xs text-zinc-550">{extraGuests} extra guests</div>
-                  </div>
-                </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  value={extraGuests}
-                  onChange={(e) => setExtraGuests(parseInt(e.target.value))}
-                  className="w-full accent-amber-400 bg-zinc-200 rounded-lg appearance-none h-1.5"
-                />
-                <div className="flex justify-between text-[10px] text-zinc-400 font-bold uppercase mt-1">
-                  <span>Up to 20 Guests (Included)</span>
-                  <span>30 Guests Max</span>
-                </div>
-              </div>
+              {/* Extra Guests slider removed (only base guests supported) */}
             </div>
           </div>
         </div>
@@ -822,7 +936,7 @@ export default function BookingWizard() {
             Contact & Guest Details
           </h2>
           <p className="text-sm text-zinc-650 mb-6">
-            Enter your details so Kyle Adrianna Sayas can contact you regarding your celebration.
+            Enter your details so Kyle Adrianna Sayas or Glenda can contact you regarding your celebration.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -950,9 +1064,9 @@ export default function BookingWizard() {
                 <h3 className="text-sm font-bold text-amber-600 uppercase tracking-wider mb-3">Payment Terms Policy</h3>
                 <p className="text-xs text-zinc-650 leading-relaxed">
                   {paymentPlan === "downpayment" ? (
-                    "At Glenda Royale Events, a **50% downpayment** is required to secure your exclusive booking slot. Once submitted, your slot will be temporarily held for **2 hours** waiting for proof of downpayment. The remaining 50% balance must be settled at the start of your event."
+                    "At Glenda Royale Events, a **50% downpayment** is required to secure your exclusive booking slot. Once submitted, your slot will be temporarily held pending payment. The remaining 50% balance must be settled at the start of your event."
                   ) : (
-                    "You have selected **100% Full Payment** to secure your booking slot. Once submitted, your slot will be temporarily held for **2 hours** waiting for proof of payment. There will be no remaining balance due at the start of your event."
+                    "You have selected **100% Full Payment** to secure your booking slot. Once submitted, your slot will be temporarily held pending payment. There will be no remaining balance due at the start of your event."
                   )}
                 </p>
               </div>
@@ -1030,21 +1144,21 @@ export default function BookingWizard() {
               <span className="font-mono text-amber-600 font-bold bg-zinc-100 px-2.5 py-1 rounded border border-zinc-250">{successData.bookingId}</span>
             </div>
 
-            <div className="space-y-2 text-sm text-zinc-850">
+            <div className="space-y-3 text-sm text-zinc-850">
               <div className="font-bold text-zinc-900 mb-1">
-                {paymentPlan === "downpayment" ? "Downpayment instructions:" : "Payment instructions:"}
+                {paymentPlan === "downpayment" ? "Downpayment Terms:" : "Payment Terms:"}
               </div>
               <p className="text-xs text-zinc-650 leading-normal">
-                Please transfer the **{paymentPlan === "downpayment" ? "50% downpayment" : "100% full payment"} of ₱{pricing.downpayment.toLocaleString()}** to secure your date:
+                Your event slot is now held. Please settle the **{paymentPlan === "downpayment" ? "50% downpayment" : "100% full payment"} of ₱{pricing.downpayment.toLocaleString()}** to finalize and secure your reservation:
               </p>
-              <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200 space-y-1 font-mono text-xs">
-                <div>Bank: **GCash / BPI**</div>
-                <div>Account Name: **Kyle Adrianna Sayas**</div>
-                <div>Account Number: **0912 718 8479**</div>
+              
+              <div className="bg-zinc-50 p-4 rounded-xl border border-zinc-200 flex flex-col items-center justify-center text-center space-y-2">
+                <CreditCard className="w-8 h-8 text-amber-600" />
+                <div className="font-bold text-zinc-900">Secure Credit Card Payment</div>
+                <p className="text-xs text-zinc-650 leading-relaxed">
+                  You can securely settle your payment using any major credit card. A secure payment link and digital invoice will be sent to your email at <strong className="text-zinc-900">{bookersEmail}</strong> shortly.
+                </p>
               </div>
-              <p className="text-xs text-rose-400 font-bold mt-2">
-                ⚠️ Hold Expiry: Settle and message proof of payment within 2 hours (before {new Date(successData.expiryTime).toLocaleTimeString()}) or the slot will be released.
-              </p>
             </div>
           </div>
 

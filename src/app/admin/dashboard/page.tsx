@@ -31,6 +31,8 @@ interface Booking {
   custom_menu_selection: {
     refreshments: string[];
     savory: string[];
+    platters?: string[];
+    desserts?: string[];
     upgrades?: string[];
   };
   is_special_request: boolean;
@@ -458,16 +460,34 @@ export default function BookingsManager() {
                   <div className="bg-zinc-100 p-3 rounded-xl border border-zinc-200">
                     <div className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1.5">Refreshments</div>
                     <ul className="space-y-1 list-disc list-inside text-zinc-650">
-                      {selectedBooking.custom_menu_selection.refreshments.map(r => <li key={r}>{r}</li>)}
+                      {selectedBooking.custom_menu_selection.refreshments?.map(r => <li key={r}>{r}</li>)}
                     </ul>
                   </div>
+
+                  {selectedBooking.custom_menu_selection.platters && selectedBooking.custom_menu_selection.platters.length > 0 && (
+                    <div className="bg-zinc-100 p-3 rounded-xl border border-zinc-200">
+                      <div className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1.5">Platters & Boards</div>
+                      <ul className="space-y-1 list-disc list-inside text-zinc-650">
+                        {selectedBooking.custom_menu_selection.platters.map(p => <li key={p}>{p}</li>)}
+                      </ul>
+                    </div>
+                  )}
 
                   <div className="bg-zinc-100 p-3 rounded-xl border border-zinc-200">
                     <div className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1.5">Savory Favorites</div>
                     <ul className="space-y-1 list-disc list-inside text-zinc-650">
-                      {selectedBooking.custom_menu_selection.savory.map(s => <li key={s}>{s}</li>)}
+                      {selectedBooking.custom_menu_selection.savory?.map(s => <li key={s}>{s}</li>)}
                     </ul>
                   </div>
+
+                  {selectedBooking.custom_menu_selection.desserts && selectedBooking.custom_menu_selection.desserts.length > 0 && (
+                    <div className="bg-zinc-100 p-3 rounded-xl border border-zinc-200">
+                      <div className="text-[10px] font-bold text-amber-400 uppercase tracking-widest mb-1.5">Sweet Desserts</div>
+                      <ul className="space-y-1 list-disc list-inside text-zinc-650">
+                        {selectedBooking.custom_menu_selection.desserts.map(d => <li key={d}>{d}</li>)}
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
                 {selectedBooking.custom_menu_selection.upgrades && selectedBooking.custom_menu_selection.upgrades.filter(Boolean).length > 0 && (

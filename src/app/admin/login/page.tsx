@@ -116,7 +116,7 @@ export default function AdminLoginPage() {
       </div>
 
       <footer className="mt-12 text-center text-[10px] text-zinc-500 tracking-wider">
-        Kyle Adrianna Sayas • Glenda's Event Place Batangas
+        Kyle Adrianna Sayas • Glenda&apos;s Event Place Batangas
       </footer>
     </div>
   );

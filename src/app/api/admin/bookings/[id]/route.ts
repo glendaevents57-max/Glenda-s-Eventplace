@@ -39,8 +39,8 @@ export async function PATCH(
     const adminId = adminResult.rows[0]?.id;
 
     // Build the dynamic update query
-    let updateFields = [];
-    let queryParams = [];
+    const updateFields: string[] = [];
+    const queryParams: unknown[] = [];
     let paramIndex = 1;
 
     if (status) {

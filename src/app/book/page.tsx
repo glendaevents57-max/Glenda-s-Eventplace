@@ -9,23 +9,31 @@ export const metadata = {
 
 export default function BookPage() {
   return (
-    <div className="relative min-h-screen bg-zinc-100 text-zinc-950 flex flex-col overflow-hidden font-sans">
+    <div 
+      className="relative min-h-screen bg-zinc-100 text-zinc-950 flex flex-col overflow-hidden font-sans"
+      style={{ 
+        backgroundImage: "url('/images/luxury_bg.png')", 
+        backgroundSize: "cover", 
+        backgroundPosition: "center", 
+        backgroundAttachment: "fixed" 
+      }}
+    >
       {/* Decorative Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] bg-gradient-to-b from-amber-400/5 to-transparent pointer-events-none blur-3xl" />
       
       {/* Header / Navbar */}
-      <header className="relative z-10 border-b border-zinc-200/80 bg-zinc-50/80 backdrop-blur-md px-6 py-4">
+      <header className="relative z-10 border-b border-amber-500/20 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 px-6 py-4 shadow-md shadow-amber-500/5">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link 
             href="/"
-            className="group flex items-center gap-2 text-xs font-bold text-zinc-600 hover:text-amber-600 transition-all uppercase tracking-widest"
+            className="group flex items-center gap-2 text-xs font-bold text-zinc-900 hover:text-zinc-950 transition-all uppercase tracking-widest"
           >
-            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
+            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform text-zinc-900" />
             Back to Home
           </Link>
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-500" />
-            <span className="font-serif font-bold text-sm tracking-wider uppercase bg-gradient-to-r from-zinc-800 to-zinc-950 bg-clip-text text-transparent">
+          <div className="flex items-center gap-2 min-w-0 flex-shrink-1">
+            <Sparkles className="w-4 h-4 text-zinc-950 flex-shrink-0" />
+            <span className="font-serif font-bold text-xs sm:text-sm tracking-wider uppercase text-zinc-950 truncate">
               Glenda Royale Events
             </span>
           </div>

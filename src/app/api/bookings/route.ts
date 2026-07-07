@@ -18,6 +18,8 @@ const bookingSchema = z.object({
   custom_menu_selection: z.object({
     refreshments: z.array(z.string()),
     savory: z.array(z.string()),
+    platters: z.array(z.string()).optional().default([]),
+    desserts: z.array(z.string()).optional().default([]),
     upgrades: z.array(z.string()).optional().default([]),
   }),
   is_special_request: z.boolean().default(false),
@@ -32,14 +34,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = bookingSchema.parse(body);
 
-    // Auto-cancel bookings that exceeded the 2-hour payment window
-    await query(
-      `UPDATE public.bookings 
-       SET status = 'cancelled' 
-       WHERE status = 'pending' 
-         AND payment_status = 'unpaid' 
-         AND expected_expiry_time < NOW()`
-    );
+    // (Auto-cancellation of pending bookings disabled per client request)
 
     const parsedDate = new Date(validatedData.event_date);
     
@@ -93,9 +88,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Set expiry time for downpayment (e.g. 2 hours from now)
-    const expectedExpiryTime = new Date();
-    expectedExpiryTime.setHours(expectedExpiryTime.getHours() + 2);
+    // 3. (Expiry time for downpayment removed per client request)
 
     // 4. Insert the booking record
     const insertQuery = `
@@ -127,7 +120,7 @@ export async function POST(request: Request) {
       validatedData.total_price,
       validatedData.downpayment_amount,
       validatedData.remaining_balance,
-      expectedExpiryTime.toISOString(),
+      null, // No expiry time
     ]);
 
     const newBooking = insertResult.rows[0];

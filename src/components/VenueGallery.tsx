@@ -10,16 +10,16 @@ interface GalleryImage {
 }
 
 const GALLERY_IMAGES: GalleryImage[] = [
-  { src: "/images/v1.jpg", title: "✨ Glenda Royale Events Venue", tag: "Exclusive Venue" },
-  { src: "/images/v2.jpg", title: "🧀 Customized Grazing Table Selection", tag: "Grazing Table" },
-  { src: "/images/v3.jpg", title: "🥂 Elegant Gold & White Styling Theme", tag: "Styling & Decor" },
-  { src: "/images/v4.jpg", title: "🧁 Delicious Dessert & Pastry Selection", tag: "Sweet Bites" },
-  { src: "/images/v5.jpg", title: "🏛️ Private Intimate Gathering Space", tag: "Private Space" },
-  { src: "/images/v6.jpg", title: "🌸 Floral Accents & Venue Details", tag: "Styling & Decor" },
-  { src: "/images/v7.jpg", title: "🍽️ Premium Dining Table Setting", tag: "Table Setting" },
-  { src: "/images/v8.jpg", title: "🥪 Savory Signature Siomai & Sliders", tag: "Savory Bites" },
-  { src: "/images/v9.jpg", title: "☕ Hot Coffee, Tea & Juice Station", tag: "Refreshments" },
-  { src: "/images/v10.jpg", title: "🎉 Unforgettable Celebration Moments", tag: "Celebration" },
+  { src: "/images/v1.jpg", title: "Glenda Royale Events Venue", tag: "Exclusive Venue" },
+  { src: "/images/v2.jpg", title: "Customized Grazing Table Selection", tag: "Grazing Table" },
+  { src: "/images/v3.jpg", title: "Elegant Gold & White Styling Theme", tag: "Styling & Decor" },
+  { src: "/images/v4.jpg", title: "Delicious Dessert & Pastry Selection", tag: "Sweet Bites" },
+  { src: "/images/v5.jpg", title: "Private Intimate Gathering Space", tag: "Private Space" },
+  { src: "/images/v6.jpg", title: "Floral Accents & Venue Details", tag: "Styling & Decor" },
+  { src: "/images/v7.jpg", title: "Premium Dining Table Setting", tag: "Table Setting" },
+  { src: "/images/v8.jpg", title: "Savory Signature Siomai & Sliders", tag: "Savory Bites" },
+  { src: "/images/v9.jpg", title: "Hot Coffee, Tea & Juice Station", tag: "Refreshments" },
+  { src: "/images/v10.jpg", title: "Unforgettable Celebration Moments", tag: "Celebration" },
 ];
 
 export default function VenueGallery() {

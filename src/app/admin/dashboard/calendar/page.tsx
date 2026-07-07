@@ -15,10 +15,32 @@ import {
 
 interface BookedSlot {
   id: string;
+  admin_id: number | null;
   bookers_name: string;
+  bookers_email: string;
+  bookers_phone_number: string;
   event_type: string;
   event_date: string;
+  duration_minutes: number;
+  visitors_count: number;
   status: string;
+  payment_status: string;
+  payment_date: string | null;
+  theme_name: string;
+  theme_details: string;
+  custom_menu_selection: {
+    refreshments: string[];
+    savory: string[];
+    platters?: string[];
+    desserts?: string[];
+    upgrades?: string[];
+  };
+  is_special_request: boolean;
+  special_request_details: string;
+  total_price: number;
+  downpayment_amount: number;
+  remaining_balance: number;
+  created_at: string;
 }
 
 interface BlockedSlot {
@@ -40,6 +62,7 @@ export default function AdminCalendarManager() {
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedDetailedBooking, setSelectedDetailedBooking] = useState<BookedSlot | null>(null);
 
   // Calendar navigation state
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -289,21 +312,27 @@ export default function AdminCalendarManager() {
                       {dayBookings.map((b) => (
                         <div 
                           key={b.id} 
-                          className={`px-1.5 py-0.5 rounded text-[9px] font-bold truncate ${
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedDetailedBooking(b);
+                          }}
+                          className={`px-1.5 py-0.5 rounded text-[9px] font-bold truncate flex items-center gap-1 cursor-pointer hover:brightness-110 active:scale-[0.98] transition-all ${
                             b.status === "confirmed" 
                               ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/10" 
                               : "bg-amber-500/10 text-amber-300 border border-amber-500/10"
                           }`}
                         >
-                          🎉 {b.bookers_name}
+                          <Sparkles className="w-2.5 h-2.5 flex-shrink-0" />
+                          <span>{b.bookers_name}</span>
                         </div>
                       ))}
                       {dayBlocks.map((s) => (
                         <div 
                           key={s.id} 
-                          className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/10 truncate"
+                          className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/10 truncate flex items-center gap-1"
                         >
-                          🔒 Blocked
+                          <Lock className="w-2.5 h-2.5 flex-shrink-0" />
+                          <span>Blocked</span>
                         </div>
                       ))}
                     </div>
@@ -351,9 +380,16 @@ export default function AdminCalendarManager() {
                           else if (hours === 19) slot = "Evening";
 
                           return (
-                            <div key={b.id} className="p-3 rounded-xl bg-zinc-50 border border-zinc-250 text-xs">
+                            <div 
+                              key={b.id} 
+                              onClick={() => setSelectedDetailedBooking(b)}
+                              className="p-3 rounded-xl bg-zinc-50 border border-zinc-250 text-xs cursor-pointer hover:border-amber-400/40 hover:shadow-sm transition-all duration-300"
+                            >
                               <div className="flex justify-between items-center mb-1">
-                                <span className="font-bold text-zinc-900">🎉 {b.bookers_name}</span>
+                                <span className="font-bold text-zinc-900 flex items-center gap-1">
+                                  <Sparkles className="w-3.5 h-3.5 text-amber-500 flex-shrink-0" />
+                                  {b.bookers_name}
+                                </span>
                                 <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
                                   b.status === "confirmed" ? "bg-emerald-500/10 text-emerald-400" : "bg-amber-500/10 text-amber-300"
                                 }`}>{b.status}</span>
@@ -462,6 +498,190 @@ export default function AdminCalendarManager() {
           </div>
         </div>
       </div>
+
+      {/* Detailed Booking Popout Modal */}
+      {selectedDetailedBooking && (
+        <div 
+          onClick={() => setSelectedDetailedBooking(null)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-zinc-950/60 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-white rounded-3xl border border-zinc-200 shadow-2xl p-6 md:p-8 space-y-6 animate-in zoom-in-95 duration-200 relative overflow-hidden"
+          >
+            {/* Header decor band */}
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-500" />
+            
+            {/* Modal Title bar */}
+            <div className="flex justify-between items-start pt-2">
+              <div>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-400/5 text-amber-600 text-[10px] font-bold tracking-wider uppercase mb-2">
+                  <Sparkles className="w-3 h-3" /> Event Details
+                </span>
+                <h3 className="text-xl font-serif font-bold text-zinc-950">
+                  {selectedDetailedBooking.bookers_name}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setSelectedDetailedBooking(null)}
+                className="w-8 h-8 rounded-full border border-zinc-200 hover:bg-zinc-100 flex items-center justify-center text-zinc-550 hover:text-zinc-800 transition-all cursor-pointer font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Content Details Grid */}
+            <div className="space-y-4 text-xs text-zinc-650">
+              <div className="grid grid-cols-2 gap-4 border-b border-zinc-150 pb-4">
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1">Email</h4>
+                  <p className="font-semibold text-zinc-900 truncate">{selectedDetailedBooking.bookers_email}</p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1">Phone</h4>
+                  <p className="font-semibold text-zinc-900">{selectedDetailedBooking.bookers_phone_number}</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4 border-b border-zinc-150 pb-4">
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1">Date & Time Slot</h4>
+                  <p className="font-semibold text-zinc-900">
+                    {(() => {
+                      const d = new Date(selectedDetailedBooking.event_date);
+                      const yr = d.getFullYear();
+                      const mo = d.toLocaleDateString("en-US", { month: "short" });
+                      const dy = d.getDate();
+                      const hrs = d.getHours();
+                      let tSlot = "Custom";
+                      if (hrs === 9) tSlot = "Morning (9 AM - 1 PM)";
+                      else if (hrs === 14) tSlot = "Afternoon (2 PM - 6 PM)";
+                      else if (hrs === 19) tSlot = "Evening (7 PM - 11 PM)";
+                      return `${mo} ${dy}, ${yr} • ${tSlot}`;
+                    })()}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1">Event Type & Guests</h4>
+                  <p className="font-semibold text-zinc-900">{selectedDetailedBooking.event_type} ({selectedDetailedBooking.visitors_count} Guests)</p>
+                </div>
+              </div>
+
+              {/* Package & Theme Info */}
+              <div className="border-b border-zinc-150 pb-4 space-y-2">
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1">Selected Package</h4>
+                  <p className="font-semibold text-zinc-900">
+                    {selectedDetailedBooking.is_special_request 
+                      ? "Bespoke Royale (Special Request Tier) - Starting ₱45,000" 
+                      : "Intimate Experience (Base Tier) - ₱30,000"}
+                  </p>
+                  {selectedDetailedBooking.is_special_request && selectedDetailedBooking.special_request_details && (
+                    <p className="text-[11px] text-zinc-500 italic mt-1 bg-zinc-50 p-2 rounded-lg border border-zinc-150">
+                      &ldquo;{selectedDetailedBooking.special_request_details}&rdquo;
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1">Styling Theme</h4>
+                  <p className="font-semibold text-zinc-900">{selectedDetailedBooking.theme_name || "Standard Styling"}</p>
+                  {selectedDetailedBooking.theme_details && (
+                    <p className="text-[10px] text-zinc-500 mt-0.5">Details: {selectedDetailedBooking.theme_details}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Menu & Upgrades Selection */}
+              <div className="border-b border-zinc-150 pb-4 space-y-3">
+                <div>
+                  <h4 className="font-bold text-[10px] text-zinc-400 uppercase tracking-wider mb-1.5">Culinary Choices & Upgrades</h4>
+                  <div className="grid grid-cols-2 gap-3 text-[11px]">
+                    <div>
+                      <span className="font-bold text-zinc-800 block mb-0.5">Refreshments:</span>
+                      <ul className="list-disc pl-4 space-y-0.5 text-zinc-600">
+                        {selectedDetailedBooking.custom_menu_selection?.refreshments?.length ? (
+                          selectedDetailedBooking.custom_menu_selection.refreshments.map((r: string) => (
+                            <li key={r}>{r}</li>
+                          ))
+                        ) : (
+                          <li>None selected</li>
+                        )}
+                      </ul>
+                    </div>
+                    {selectedDetailedBooking.custom_menu_selection?.platters?.length ? (
+                      <div>
+                        <span className="font-bold text-zinc-800 block mb-0.5">Platters & Boards:</span>
+                        <ul className="list-disc pl-4 space-y-0.5 text-zinc-600">
+                          {selectedDetailedBooking.custom_menu_selection.platters.map((p: string) => (
+                            <li key={p}>{p}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                    <div>
+                      <span className="font-bold text-zinc-800 block mb-0.5">Savory Favorites:</span>
+                      <ul className="list-disc pl-4 space-y-0.5 text-zinc-600">
+                        {selectedDetailedBooking.custom_menu_selection?.savory?.length ? (
+                          selectedDetailedBooking.custom_menu_selection.savory.map((s: string) => (
+                            <li key={s}>{s}</li>
+                          ))
+                        ) : (
+                          <li>None selected</li>
+                        )}
+                      </ul>
+                    </div>
+                    {selectedDetailedBooking.custom_menu_selection?.desserts?.length ? (
+                      <div>
+                        <span className="font-bold text-zinc-800 block mb-0.5">Sweet Desserts:</span>
+                        <ul className="list-disc pl-4 space-y-0.5 text-zinc-600">
+                          {selectedDetailedBooking.custom_menu_selection.desserts.map((d: string) => (
+                            <li key={d}>{d}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+
+                {selectedDetailedBooking.custom_menu_selection?.upgrades?.length && (
+                  <div>
+                    <span className="font-bold text-[10px] text-zinc-800 block mb-1">Availment Upgrades:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedDetailedBooking.custom_menu_selection.upgrades.map((u: string) => (
+                        <span key={u} className="px-2 py-0.5 bg-amber-500/10 text-amber-800 font-bold rounded text-[10px] border border-amber-500/10">
+                          {u}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Cost Summary Breakdown */}
+              <div className="bg-zinc-50 rounded-2xl p-4 border border-zinc-150 space-y-2">
+                <div className="flex justify-between font-medium">
+                  <span className="text-zinc-500">Total Price:</span>
+                  <span className="text-zinc-900 font-bold">₱{selectedDetailedBooking.total_price?.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between font-medium">
+                  <span className="text-zinc-500">Downpayment Split (50%):</span>
+                  <span className="text-zinc-900 font-bold">₱{selectedDetailedBooking.downpayment_amount?.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between font-medium border-t border-zinc-200/80 pt-2 text-[13px]">
+                  <span className="font-bold text-zinc-700">Remaining Balance:</span>
+                  <span className="text-amber-600 font-extrabold">₱{selectedDetailedBooking.remaining_balance?.toLocaleString()}</span>
+                </div>
+              </div>
+
+              {/* Status footer inside card */}
+              <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider text-zinc-400 pt-2">
+                <div>Status: <span className={`px-2 py-0.5 rounded ml-1 ${selectedDetailedBooking.status === 'confirmed' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'}`}>{selectedDetailedBooking.status}</span></div>
+                <div>Payment: <span className={`px-2 py-0.5 rounded ml-1 ${selectedDetailedBooking.payment_status === 'paid' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-rose-500/10 text-rose-600'}`}>{selectedDetailedBooking.payment_status}</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
